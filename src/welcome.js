@@ -1,5 +1,8 @@
 import React from "react";
 import Register from "./Register";
+import Reset from "./Reset";
+import { HashRouter, Route } from "react-router-dom";
+import Login from "./Login";
 
 const styles = {
     wrapper: {
@@ -23,12 +26,16 @@ export default class Welcome extends React.Component {
 
     render() {
         return (
-            <div style={styles.wrapper}>
+            <HashRouter style={styles.wrapper}>
                 <img src="/public/logo.png" style={styles.image} />
+                <style>{"div:hover {color: blue;}"}</style>
 
                 <div>Hello from welcome page!</div>
-                <Register />
-            </div>
+
+                <Route exact path="/" component={Register} />
+                <Route path="/login" component={Login} />
+                <Route path="/reset" component={Reset} />
+            </HashRouter>
         );
     }
 }

@@ -8,6 +8,16 @@ CREATE TABLE users
     email VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     bio VARCHAR(500),
-    profile_pic VARCHAR(2550,)
+    profile_pic VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+DROP TABLE IF EXISTS password_reset_codes;
+
+
+CREATE TABLE password_reset_codes(
+    id SERIAL PRIMARY KEY,
+    email VARCHAR,
+    code VARCHAR(6),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

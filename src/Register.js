@@ -1,5 +1,6 @@
 import React from "react";
-import axios from "axios";
+import axios from "./axios";
+import { Link } from "react-router-dom";
 
 const styles = {
     wrapper: {
@@ -34,35 +35,28 @@ export default class Register extends React.Component {
     handleChange(e) {
         this.setState({
             [e.target.name]: e.target.value,
-            [e.target.last]: e.target.value,
-            [e.target.email]: e.target.value,
-            [e.target.password]: e.target.value,
         });
     }
 
     submit() {
-        console.log("this.state.first submit :", this.state.last);
-        console.log("this.state.pass submit :", this.state.password);
-        console.log("test :", this.state.test);
-        let self = this;
         axios
             .post("/register", {
-                first: self.state.first,
-                last: self.state.last,
-                email: self.state.email,
-                password: self.state.password,
+                first: this.state.first,
+                last: this.state.last,
+                email: this.state.email,
+                password: this.state.password,
             })
             .then(({ data }) => {
                 if (data.success) {
                     location.replace("/");
                 } else {
-                    self.setState({
+                    this.setState({
                         error: true,
                     });
                 }
             })
             .catch(() =>
-                self.setState({
+                this.setState({
                     error: true,
                 })
             );
@@ -97,6 +91,9 @@ export default class Register extends React.Component {
                 <button style={styles.btn} onClick={this.submit}>
                     Register
                 </button>
+
+                <Link to="/login"> login </Link>
+                <a href="/logout">logout</a>
             </div>
         );
     }

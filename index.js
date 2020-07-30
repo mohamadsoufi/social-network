@@ -4,7 +4,7 @@ const compression = require("compression");
 const db = require("./db");
 const bodyParser = require("body-parser");
 
-// let csurf = require("csurf");
+let csurf = require("csurf");
 
 const { hash, compare } = require("./bc.js");
 
@@ -21,14 +21,18 @@ app.use(bodyParser.json());
 
 app.use("/public", express.static("./public"));
 
-// app.use(csurf());
+app.use(csurf());
+app.use(function (req, res, next) {
+    res.cookie("mytoken", req.csrfToken());
+    next();
+});
 
-// module.exports = { app }
-// app.use(function (req, res, next) {
-//     res.setHeader("x-frame-options", "deny");
-//     res.locals.csrfToken = req.csrfToken();
-//     next();
-// });
+module.exports = { app };
+app.use(function (req, res, next) {
+    res.setHeader("x-frame-options", "deny");
+    res.locals.csrfToken = req.csrfToken();
+    next();
+});
 
 app.use(compression());
 
@@ -44,6 +48,7 @@ if (process.env.NODE_ENV != "production") {
 }
 
 app.post("/register", (req, res) => {
+    console.log("req.body :", req.body);
     if (Object.keys(req.body).length !== 0) {
         let { first, last, email, password } = req.body;
         hash(password)
@@ -66,6 +71,33 @@ app.post("/register", (req, res) => {
     }
 });
 
+app.post("/login", function (req, res) {
+    console.log("req.body :", req.body);
+    let { email, password } = req.body;
+
+    db.getUserInfo(email, password)
+        .then(({ rows }) => {
+            let hashedPw = rows[0].password;
+            let id = rows[0].id;
+
+            compare(password, hashedPw)
+                .then((matchValue) => {
+                    if (matchValue) {
+                        req.session.userId = id;
+                        res.json({ success: true });
+                    } else {
+                        res.json({ success: false });
+                    }
+                })
+                .catch((err) => {
+                    console.log("error in compare in POST login:", err);
+                });
+        })
+        .catch((err) => {
+            console.log("err in get user info:", err);
+        });
+});
+
 app.get("/welcome", function (req, res) {
     if (req.session.userId) {
         res.redirect("/");
@@ -74,11 +106,16 @@ app.get("/welcome", function (req, res) {
     }
 });
 
+app.get("/logout", function (req, res) {
+    req.session.userId = null;
+    res.redirect("/login");
+});
+
 app.get("*", function (req, res) {
-    if (req.session.userId) {
-        res.sendFile(__dirname + "/index.html");
-    } else {
+    if (!req.session.userId) {
         res.redirect("/welcome");
+    } else {
+        res.sendFile(__dirname + "/index.html");
     }
 });
 

@@ -3,13 +3,9 @@ import ReactDOM from "react-dom";
 
 import Welcome from "./welcome.js";
 import Home from "./Home.js";
-// import './App.css';
-// import logo from './logo.png';
-
-// console.log('logo :', logo);
 
 let elem;
-let isLoggedIn = location.pathname !== "/welcome";
+let isLoggedIn = location.pathname != "/welcome";
 
 if (isLoggedIn) {
     elem = <Home />;
