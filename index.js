@@ -3,7 +3,13 @@ const app = express();
 const compression = require("compression");
 const db = require("./db");
 const bodyParser = require("body-parser");
+const ses = require("./src/ses.js");
+const cryptoRandomString = require("crypto-random-string");
+const secretCode = cryptoRandomString({
+    length: 6,
+});
 
+// const { sendEmail } = require("./src/ses");
 let csurf = require("csurf");
 
 const { hash, compare } = require("./bc.js");
@@ -65,6 +71,7 @@ app.post("/register", (req, res) => {
             })
             .catch((err) => {
                 console.log("error in POST register", err);
+                res.json({ success: false });
             });
     } else {
         res.json({ success: false });
@@ -96,6 +103,46 @@ app.post("/login", function (req, res) {
         .catch((err) => {
             console.log("err in get user info:", err);
         });
+});
+
+app.post("/reset-password", function (req, res) {
+    // res.json({ step: 1 });
+    console.log("email in reset pw :", req.body.email);
+    db.getUserInfo(req.body.email)
+        .then(({ rows }) => {
+            if (rows[0].length !== 0) {
+                let to = rows[0].email;
+                // console.log("to :", typeof to);
+                let text = secretCode;
+                let subj = "Your Application Has Been Accepted!";
+                db.addCodeAndEmail(text, to)
+                    .then(() => {
+                        ses.sendEmail(to, text, subj)
+                            .then((resp) => {
+                                console.log("resp in send email :", resp);
+                                res.json({ step: 2 });
+                            })
+                            .catch((err) => {
+                                console.log("err :", err);
+                            });
+                    })
+                    .catch((err) => {
+                        console.log("err in add code and email :", err);
+                    });
+            } else {
+                res.json({ error: true });
+            }
+        })
+        .check((err) => {
+            console.log("err in get user info /reset pw:", err);
+        });
+    //   res.send('POST request to the homepage')
+});
+
+app.post("/check-code", (req, res) => {
+    console.log("req.body in check code :", req.body);
+    // let { code, password } = req.body;
+    //   res.send('GET request to the homepage')
 });
 
 app.get("/welcome", function (req, res) {

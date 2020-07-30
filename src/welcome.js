@@ -1,8 +1,8 @@
 import React from "react";
 import Register from "./Register";
-import Reset from "./Reset";
 import { HashRouter, Route } from "react-router-dom";
 import Login from "./Login";
+import ResetPassword from "./ResetPassword";
 
 const styles = {
     wrapper: {
@@ -34,7 +34,7 @@ export default class Welcome extends React.Component {
 
                 <Route exact path="/" component={Register} />
                 <Route path="/login" component={Login} />
-                <Route path="/reset" component={Reset} />
+                <Route path="/reset-password" component={ResetPassword} />
             </HashRouter>
         );
     }

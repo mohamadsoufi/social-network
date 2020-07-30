@@ -13,14 +13,21 @@ module.exports.addUserInfo = (first, last, email, password) => {
 };
 
 module.exports.getUserInfo = (email) => {
-    let q = ` SELECT * FROM users
+    let q = `SELECT * FROM users
             WHERE  users.email = $1`;
     let params = [email];
     return db.query(q, params);
 };
 
+module.exports.addCodeAndEmail = (params) => {
+    let q = `INSERT INTO password_reset_codes
+             (code, email)
+             VALUES ($1, $2)'`;
+    return db.query(q, params);
+};
+
 module.exports.checkCode = () => {
-    let q = `SELECT * FROM my_table
+    let q = `SELECT * FROM password_reset_codes
             WHERE
  CURRENT_TIMESTAMP - created_at < INTERVAL '10 minutes'`;
     return db.query(q);

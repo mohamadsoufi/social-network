@@ -93,6 +93,7 @@ export default class Register extends React.Component {
                 </button>
 
                 <Link to="/login"> login </Link>
+                <Link to="/reset-password"> reset password </Link>
                 <a href="/logout">logout</a>
             </div>
         );
