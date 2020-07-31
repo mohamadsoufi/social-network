@@ -19,6 +19,13 @@ module.exports.getUserInfo = (email) => {
     return db.query(q, params);
 };
 
+module.exports.getUser = (id) => {
+    let q = `SELECT * FROM users
+            WHERE id = $1`;
+    let params = [id];
+    return db.query(q, params);
+};
+
 module.exports.addCodeAndEmail = (params) => {
     let q = `INSERT INTO password_reset_codes
              (code, email)

@@ -87,6 +87,7 @@ export default class Register extends React.Component {
                     onChange={(e) => this.handleChange(e)}
                     placeholder="password"
                     name="password"
+                    type="password"
                 />
                 <button style={styles.btn} onClick={this.submit}>
                     Register

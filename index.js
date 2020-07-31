@@ -8,6 +8,8 @@ const cryptoRandomString = require("crypto-random-string");
 const secretCode = cryptoRandomString({
     length: 6,
 });
+const { s3Url } = require("./config.json");
+const s3 = require("./s3");
 
 // const { sendEmail } = require("./src/ses");
 let csurf = require("csurf");
@@ -52,6 +54,33 @@ if (process.env.NODE_ENV != "production") {
 } else {
     app.use("/bundle.js", (req, res) => res.sendFile(`${__dirname}/bundle.js`));
 }
+
+///////////////// MULTER ///////////////
+const multer = require("multer");
+const uidSafe = require("uid-safe");
+const path = require("path");
+const { get } = require("http");
+const { lchmod } = require("fs");
+const diskStorage = multer.diskStorage({
+    destination: function (req, file, callback) {
+        callback(null, __dirname + "/uploads");
+    },
+    filename: function (req, file, callback) {
+        uidSafe(24).then(function (uid) {
+            callback(null, uid + path.extname(file.originalname));
+        });
+    },
+});
+
+const uploader = multer({
+    storage: diskStorage,
+    limits: {
+        fileSize: 2097152,
+    },
+});
+////////////////////////
+
+/////ROUTES/////
 
 app.post("/register", (req, res) => {
     console.log("req.body :", req.body);
@@ -172,6 +201,18 @@ app.get("/welcome", function (req, res) {
     } else {
         res.sendFile(__dirname + "/index.html");
     }
+});
+
+app.get("/user", (req, res) => {
+    db.getUser(req.session.userId).then(({ rows }) => {
+        let { first, last, bio, profile_pic } = rows[0];
+        res.json({ first, last, bio, profile_pic });
+    });
+});
+
+app.post("/upload", uploader.single("file"), s3.upload, function (req, res) {
+    console.log("req.body in upload :", req.body);
+    // res.send("POST request to the homepage");
 });
 
 app.get("/logout", function (req, res) {
