@@ -79,10 +79,8 @@ app.post("/register", (req, res) => {
 });
 
 app.post("/login", function (req, res) {
-    console.log("req.body :", req.body);
     let { email, password } = req.body;
-
-    db.getUserInfo(email, password)
+    db.getUserInfo(email)
         .then(({ rows }) => {
             let hashedPw = rows[0].password;
             let id = rows[0].id;
@@ -90,6 +88,7 @@ app.post("/login", function (req, res) {
             compare(password, hashedPw)
                 .then((matchValue) => {
                     if (matchValue) {
+                        console.log("matchValue :", matchValue);
                         req.session.userId = id;
                         res.json({ success: true });
                     } else {
@@ -106,21 +105,19 @@ app.post("/login", function (req, res) {
 });
 
 app.post("/reset-password", function (req, res) {
-    // res.json({ step: 1 });
-    console.log("email in reset pw :", req.body.email);
     db.getUserInfo(req.body.email)
         .then(({ rows }) => {
             if (rows[0].length !== 0) {
                 let to = rows[0].email;
-                // console.log("to :", typeof to);
                 let text = secretCode;
-                let subj = "Your Application Has Been Accepted!";
-                db.addCodeAndEmail(text, to)
+                let subj = "This is your Code.";
+                db.addCodeAndEmail([text, to])
                     .then(() => {
+                        console.log("text inside add code to db:", text);
                         ses.sendEmail(to, text, subj)
                             .then((resp) => {
                                 console.log("resp in send email :", resp);
-                                res.json({ step: 2 });
+                                res.json({ step: true });
                             })
                             .catch((err) => {
                                 console.log("err :", err);
@@ -133,16 +130,40 @@ app.post("/reset-password", function (req, res) {
                 res.json({ error: true });
             }
         })
-        .check((err) => {
+        .catch((err) => {
             console.log("err in get user info /reset pw:", err);
         });
-    //   res.send('POST request to the homepage')
 });
 
 app.post("/check-code", (req, res) => {
-    console.log("req.body in check code :", req.body);
-    // let { code, password } = req.body;
-    //   res.send('GET request to the homepage')
+    let { email, code, password } = req.body;
+
+    db.checkCode([email])
+        .then(({ rows }) => {
+            let codeInDb = rows[0].code;
+            let emailInDb = rows[0].email;
+            if (codeInDb === code && email === emailInDb) {
+                hash(password)
+                    .then((hashedPw) => {
+                        db.updatePassword(hashedPw, email)
+                            .then(() => {
+                                res.json({ step: true });
+                            })
+                            .catch((err) => {
+                                console.log("err in POST /addUserInfo :", err);
+                            });
+                    })
+                    .catch((err) => {
+                        console.log("error in POST register", err);
+                        res.json({ step: false });
+                    });
+            } else {
+                res.json({ step: false });
+            }
+        })
+        .catch((err) => {
+            console.log("err in check code :", err);
+        });
 });
 
 app.get("/welcome", function (req, res) {
