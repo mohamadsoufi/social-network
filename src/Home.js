@@ -45,13 +45,13 @@ export default class Home extends Component {
         return (
             <Fragment>
                 <img src="/public/logo.png" style={styles.image} alt="logo" />
-                <h3
-                    onClick={() => {
-                        this.toggleModal();
-                    }}
+                {/* <h3
+                // onClick={() => {
+                //     this.toggleModal();
+                // }}
                 >
                     change Image
-                </h3>
+                </h3> */}
 
                 <ProfilePic
                     first={this.state.first}
