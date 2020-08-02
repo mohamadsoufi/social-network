@@ -14,19 +14,19 @@ export default class Home extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            uploaderIsVisible: false,
+            ProfilePic: false,
+            imgUrl: "",
         };
     }
 
     componentDidMount() {
-        console.log("App has mounted!!!!");
         axios
             .get("/user")
-            .then(({ data: { first, last, bio, Profile_pic } }) => {
+            .then(({ data: { first, last, bio, profile_pic } }) => {
                 this.setState({
                     first: first,
                     last: last,
-                    imgUrl: Profile_pic,
+                    imgUrl: profile_pic,
                 });
             })
             .catch((err) => {
@@ -35,10 +35,14 @@ export default class Home extends Component {
     }
 
     toggleModal() {
-        console.log("toggle modal is running");
         this.setState({
             ProfilePic: !this.state.ProfilePic,
+            imgUrl: this.state.imgUrl,
         });
+    }
+
+    updateUrl(e) {
+        this.setState({ imgUrl: e });
     }
 
     render() {
@@ -56,10 +60,17 @@ export default class Home extends Component {
                 <ProfilePic
                     first={this.state.first}
                     last={this.state.last}
+                    imgUrl={this.state.imgUrl}
                     toggleModal={() => this.toggleModal()}
                 />
 
-                {this.state.ProfilePic && <Uploader />}
+                {this.state.ProfilePic && (
+                    <Uploader
+                        imgUrl={this.state.imgUrl}
+                        toggleModal={(e) => this.toggleModal(e)}
+                        updateUrl={(e) => this.updateUrl(e)}
+                    />
+                )}
             </Fragment>
         );
     }

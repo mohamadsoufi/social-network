@@ -4,37 +4,42 @@ import axios from "./axios";
 export default class Uploader extends Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        let { imgUrl } = props;
+        console.log("props in uploader :", props);
+        console.log("imgUrl in uploader:", imgUrl);
+        this.state = {
+            imgUrl: this.props.imgUrl,
+        };
     }
-    // let { first, last, imgUrl } = props;
     // imgUrl = imgUrl || "/img/default.png";
 
     handleChange(e) {
-        this.setState(
-            {
-                [e.target.name]: e.target.value,
-            },
-            () => {
-                console.log("e.target.file :", this.state.file);
-            }
-        );
+        this.setState({
+            [e.target.name]: e.target.files[0],
+        });
+    }
+
+    toggleModal(e) {
+        this.setState({
+            imgUrl: e,
+        });
     }
 
     submit() {
-        console.log("this.state.file sbmt :", this.state.file);
-        // let {
-        //         file: this.state.file;
-        //     }
         var formData = new FormData();
         formData.append("file", this.state.file);
-        console.log("formData :", formData);
+        this.props.toggleModal();
 
         axios
             .post("/upload", formData)
-            .then((resp) => {
-                // self.images.unshift(resp.data.image)
-                console.log("resp in upload ax :", resp);
+            .then(({ data }) => {
+                console.log("{data} in upload ax :", data);
+
+                console.log("this.props.imgUrl :", this.props.imgUrl);
+
+                this.props.updateUrl(data);
             })
+
             .catch((err) => {
                 console.log("err in POST /upload: ", err);
             });

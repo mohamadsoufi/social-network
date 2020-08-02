@@ -12,6 +12,15 @@ module.exports.addUserInfo = (first, last, email, password) => {
     return db.query(q, params);
 };
 
+module.exports.addUserPic = (url, id) => {
+    let q = ` UPDATE users
+            SET profile_pic = $1
+            WHERE id = $2
+            RETURNING profile_pic;`;
+    let params = [url, id];
+    return db.query(q, params);
+};
+
 module.exports.getUserInfo = (email) => {
     let q = `SELECT * FROM users
             WHERE email = $1`;

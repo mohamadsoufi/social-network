@@ -22,7 +22,7 @@ export default function ProfilePic(props) {
             {/* <img src="/public/logo.png" style={styles.image} alt="logo" /> */}
             <img
                 onClick={props.toggleModal}
-                src="/public/logo.png"
+                src={imgUrl}
                 style={styles.image}
                 alt={first}
             />

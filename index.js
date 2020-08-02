@@ -209,12 +209,19 @@ app.get("/user", (req, res) => {
     });
 });
 
-app.post("/upload", function (req, res) {
-    console.log("req.body in upload :", req.body);
-    console.log("req.file :", req.file);
+app.post("/upload", uploader.single("file"), s3.upload, function (req, res) {
+    // console.log("req.body in upload :", req.body);
+    // console.log("req.file :", req.file);
     const { filename } = req.file;
     const url = s3Url + filename;
-    console.log("url :", url);
+    // console.log("url :", url);
+    console.log("req.session.userIds :", req.session.userId);
+    db.addUserPic(url, req.session.userId).then(({ rows }) => {
+        // console.log("rows :", rows);
+        res.json(rows[0].profile_pic);
+
+        // res.json({rows[0].url})
+    });
     // res.send("POST request to the homepage");
 });
 
