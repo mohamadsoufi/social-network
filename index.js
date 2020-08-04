@@ -82,7 +82,7 @@ const uploader = multer({
 /////ROUTES/////
 
 app.post("/register", (req, res) => {
-    console.log("req.body :", req.body);
+    // console.log("req.body :", req.body);
     if (Object.keys(req.body).length !== 0) {
         let { first, last, email, password } = req.body;
         hash(password)
@@ -207,6 +207,12 @@ app.get("/user", (req, res) => {
         let { first, last, bio, profile_pic, id } = rows[0];
         res.json({ first, last, bio, profile_pic, id });
     });
+});
+
+app.get("/user/:id.json", async (req, res) => {
+    const { id } = req.params;
+    const data = db.getUser(id);
+    res.json(await data);
 });
 
 app.post("/upload", uploader.single("file"), s3.upload, function (req, res) {

@@ -24,18 +24,12 @@ export function Profile(props) {
                     setBio={props.setBio}
                 />
                 <div className="profile-right-side">
-                    {/* <img
-                        className="profile-large-img"
-                        src={imgUrl}
-                        alt={(first, last)}
-                    /> */}
-                    {/* pass the class from the parent <<<<<<<<<<<<<<<<<*/}
                     <ProfilePic
-                        className="profile-large-img"
+                        profilePicSize="profile-pic-large"
                         first={first}
                         last={last}
                         imgUrl={imgUrl}
-                        onClick={toggleModal}
+                        toggleModal={toggleModal}
                     />
                 </div>
             </div>

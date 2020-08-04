@@ -2,6 +2,9 @@ import React, { Component, Fragment } from "react";
 import ProfilePic from "./ProfilePic";
 import Uploader from "./Uploader";
 import { Profile } from "./Profile";
+import { OtherProfile } from "./OtherProfile";
+import { BrowserRouter, Route } from "react-router-dom";
+
 import axios from "./axios";
 
 const styles = {
@@ -18,6 +21,7 @@ export default class Home extends Component {
             ProfilePic: false,
             imgUrl: "",
             bio: "",
+            id: null,
         };
     }
 
@@ -55,7 +59,7 @@ export default class Home extends Component {
 
     render() {
         return (
-            <Fragment>
+            <BrowserRouter>
                 <div className="header">
                     <div>
                         <img src="/logo.png" style={styles.image} alt="logo" />
@@ -67,6 +71,7 @@ export default class Home extends Component {
                             </a>
                         </div>
                         <ProfilePic
+                            profilePicSize="profile-pic-small"
                             first={this.state.first}
                             last={this.state.last}
                             imgUrl={this.state.imgUrl}
@@ -84,16 +89,23 @@ export default class Home extends Component {
                         />
                     )}
                 </div>
-                <Profile
-                    first={this.state.first}
-                    last={this.state.last}
-                    imgUrl={this.state.imgUrl}
-                    id={this.state.id}
-                    bio={this.state.bio}
-                    setBio={(e) => this.setBio(e)}
-                    toggleModal={() => this.toggleModal()}
+                <Route
+                    exact
+                    path="/"
+                    render={() => (
+                        <Profile
+                            first={this.state.first}
+                            last={this.state.last}
+                            imgUrl={this.state.imgUrl}
+                            id={this.state.id}
+                            bio={this.state.bio}
+                            setBio={(e) => this.setBio(e)}
+                            toggleModal={() => this.toggleModal()}
+                        />
+                    )}
                 />
-            </Fragment>
+                <Route path="/user/:id" component={OtherProfile} />
+            </BrowserRouter>
         );
     }
 }

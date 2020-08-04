@@ -33,7 +33,13 @@
     margin: 20px 100px;
 }
 
-.profile-large-img {
+.profile-pic-small {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+}
+
+.profile-pic-large {
     height: 300px;
     width: 300px;
     border-radius: 50%;

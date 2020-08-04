@@ -75,7 +75,7 @@ export class BioEditor extends Component {
                     </button>
                 </div>
             );
-        } else if (this.props.bio !== null) {
+        } else if (this.props.bio) {
             return (
                 <div className="bio-text-container">
                     <h2>{this.props.bio}</h2>
