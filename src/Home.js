@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from "react";
 import ProfilePic from "./ProfilePic";
 import Uploader from "./Uploader";
+import { Profile } from "./Profile";
 import axios from "./axios";
 
 const styles = {
@@ -16,17 +17,20 @@ export default class Home extends Component {
         this.state = {
             ProfilePic: false,
             imgUrl: "",
+            bio: "",
         };
     }
 
     componentDidMount() {
         axios
             .get("/user")
-            .then(({ data: { first, last, bio, profile_pic } }) => {
+            .then(({ data: { first, last, bio, profile_pic, id } }) => {
                 this.setState({
                     first: first,
                     last: last,
                     imgUrl: profile_pic,
+                    id: id,
+                    bio: bio,
                 });
             })
             .catch((err) => {
@@ -45,32 +49,50 @@ export default class Home extends Component {
         this.setState({ imgUrl: e });
     }
 
+    setBio(e) {
+        this.setState({ bio: e });
+    }
+
     render() {
         return (
             <Fragment>
-                <img src="/public/logo.png" style={styles.image} alt="logo" />
-                {/* <h3
-                // onClick={() => {
-                //     this.toggleModal();
-                // }}
-                >
-                    change Image
-                </h3> */}
+                <div className="header">
+                    <div>
+                        <img src="/logo.png" style={styles.image} alt="logo" />
+                    </div>
+                    <div className="header-right">
+                        <div className="header-titles">
+                            <a className="header-links" href="/logout">
+                                log out
+                            </a>
+                        </div>
+                        <ProfilePic
+                            first={this.state.first}
+                            last={this.state.last}
+                            imgUrl={this.state.imgUrl}
+                            toggleModal={() => this.toggleModal()}
+                        />
+                    </div>
+                </div>
 
-                <ProfilePic
+                <div className="upload-file-container">
+                    {this.state.ProfilePic && (
+                        <Uploader
+                            imgUrl={this.state.imgUrl}
+                            toggleModal={() => this.toggleModal()}
+                            updateUrl={(e) => this.updateUrl(e)}
+                        />
+                    )}
+                </div>
+                <Profile
                     first={this.state.first}
                     last={this.state.last}
                     imgUrl={this.state.imgUrl}
+                    id={this.state.id}
+                    bio={this.state.bio}
+                    setBio={(e) => this.setBio(e)}
                     toggleModal={() => this.toggleModal()}
                 />
-
-                {this.state.ProfilePic && (
-                    <Uploader
-                        imgUrl={this.state.imgUrl}
-                        toggleModal={(e) => this.toggleModal(e)}
-                        updateUrl={(e) => this.updateUrl(e)}
-                    />
-                )}
             </Fragment>
         );
     }

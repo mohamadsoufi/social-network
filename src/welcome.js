@@ -27,7 +27,7 @@ export default class Welcome extends React.Component {
     render() {
         return (
             <HashRouter style={styles.wrapper}>
-                <img src="/public/logo.png" style={styles.image} />
+                <img src="/logo.png" style={styles.image} />
                 <style>{"div:hover {color: blue;}"}</style>
 
                 <div>Hello from welcome page!</div>

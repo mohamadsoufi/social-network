@@ -4,14 +4,11 @@ import axios from "./axios";
 export default class Uploader extends Component {
     constructor(props) {
         super(props);
-        let { imgUrl } = props;
-        console.log("props in uploader :", props);
-        console.log("imgUrl in uploader:", imgUrl);
+
         this.state = {
             imgUrl: this.props.imgUrl,
         };
     }
-    // imgUrl = imgUrl || "/img/default.png";
 
     handleChange(e) {
         this.setState({
@@ -33,10 +30,6 @@ export default class Uploader extends Component {
         axios
             .post("/upload", formData)
             .then(({ data }) => {
-                console.log("{data} in upload ax :", data);
-
-                console.log("this.props.imgUrl :", this.props.imgUrl);
-
                 this.props.updateUrl(data);
             })
 
@@ -49,12 +42,16 @@ export default class Uploader extends Component {
         return (
             <Fragment>
                 <input
+                    className="upload-file"
                     onChange={(e) => this.handleChange(e)}
                     type="file"
                     name="file"
                     accept="image/*"
                 />
-                <button onClick={() => this.submit()}>submit</button>
+                <label className="upload-file-label">Upload Picture</label>
+                <button className="upload-btn" onClick={() => this.submit()}>
+                    submit
+                </button>
             </Fragment>
         );
     }

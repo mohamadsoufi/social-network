@@ -27,7 +27,7 @@ app.use(
 
 app.use(bodyParser.json());
 
-app.use("/public", express.static("./public"));
+app.use(express.static("public"));
 
 app.use(csurf());
 app.use(function (req, res, next) {
@@ -204,8 +204,8 @@ app.get("/welcome", function (req, res) {
 
 app.get("/user", (req, res) => {
     db.getUser(req.session.userId).then(({ rows }) => {
-        let { first, last, bio, profile_pic } = rows[0];
-        res.json({ first, last, bio, profile_pic });
+        let { first, last, bio, profile_pic, id } = rows[0];
+        res.json({ first, last, bio, profile_pic, id });
     });
 });
 
@@ -215,7 +215,6 @@ app.post("/upload", uploader.single("file"), s3.upload, function (req, res) {
     const { filename } = req.file;
     const url = s3Url + filename;
     // console.log("url :", url);
-    console.log("req.session.userIds :", req.session.userId);
     db.addUserPic(url, req.session.userId).then(({ rows }) => {
         // console.log("rows :", rows);
         res.json(rows[0].profile_pic);
@@ -223,6 +222,13 @@ app.post("/upload", uploader.single("file"), s3.upload, function (req, res) {
         // res.json({rows[0].url})
     });
     // res.send("POST request to the homepage");
+});
+
+app.post("/update-bio", function (req, res) {
+    db.updateBio(req.body.text, req.session.userId).then(({ rows }) => {
+        let { bio, id } = rows[0];
+        res.json({ bio, id, success: true });
+    });
 });
 
 app.get("/logout", function (req, res) {

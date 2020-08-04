@@ -51,6 +51,7 @@ export default class Login extends React.Component {
                     onChange={(e) => this.handleChange(e)}
                     name="password"
                     placeholder="password"
+                    type="password"
                 />
 
                 <button onClick={() => this.submit()}>Login</button>

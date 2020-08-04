@@ -1,0 +1,112 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito&display=swap");
+
+body {
+    font-family: "Nunito", sans-serif;
+}
+
+.header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+
+.header-right {
+    display: flex;
+}
+
+.header-links {
+    text-decoration: none;
+    color: rgb(5, 5, 173);
+}
+
+.header-titles:hover {
+    color: rgba(0, 0, 0, 0.705);
+    background-color: rgba(179, 177, 177, 0.144);
+    border-radius: 20px;
+}
+
+.header-titles {
+    padding: 25px 10px;
+    margin: 10px 25px;
+    font-size: 25px;
+    font-weight: 700;
+}
+
+.upload-file-container {
+    margin: 10px 10px;
+    height: 40px;
+    width: 300px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    position: fixed;
+    right: 0;
+    top: 86px;
+}
+
+.upload-item {
+    flex-grow: 1;
+    font-size: 16px;
+    max-width: 300px;
+    margin-right: 10px;
+    height: 30px;
+    text-align: center;
+}
+
+.upload-file-label {
+    color: white;
+    background-color: rgba(66, 66, 66, 0.6);
+    flex-grow: 1;
+    cursor: pointer;
+    font-size: 15px;
+    height: 30px;
+    text-align: center;
+}
+
+.upload-file-label:hover,
+.upload-btn:hover,
+.more-btn:hover {
+    background-color: rgba(98, 97, 97, 0.178);
+    color: black;
+}
+
+.upload-file {
+    position: absolute;
+    opacity: 0;
+    overflow: hidden;
+    width: 150px;
+    height: 33px;
+    cursor: pointer;
+    z-index: 0;
+}
+
+.upload-btn {
+    color: white;
+    background-color: rgb(98, 97, 97);
+    /* flex-grow: 1; */
+    margin-left: auto;
+    font-size: 20px;
+    height: 30px;
+    cursor: pointer;
+    border: none;
+}
+
+.profile-pic {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+}
+
+input {
+    width: 300px;
+    height: 30px;
+    border-radius: 10px;
+    padding-left: 10px;
+}
+
+a {
+    font-size: 20px;
+    padding: 5px 10px;
+    font-weight: 600;
+}

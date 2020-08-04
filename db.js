@@ -16,8 +16,17 @@ module.exports.addUserPic = (url, id) => {
     let q = ` UPDATE users
             SET profile_pic = $1
             WHERE id = $2
-            RETURNING profile_pic;`;
+            RETURNING profile_pic, id;`;
     let params = [url, id];
+    return db.query(q, params);
+};
+
+module.exports.updateBio = (bio, id) => {
+    let q = ` UPDATE users
+            SET bio = $1
+            WHERE id = $2
+            RETURNING bio, id;`;
+    let params = [bio, id];
     return db.query(q, params);
 };
 
