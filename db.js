@@ -30,6 +30,17 @@ module.exports.updateBio = (bio, id) => {
     return db.query(q, params);
 };
 
+module.exports.getRecentUsers = () => {
+    let q = "  SELECT * FROM users ORDER BY id DESC LIMIT 3";
+    return db.query(q);
+};
+
+module.exports.getUsers = (val) => {
+    let q = `SELECT * FROM users WHERE first ILIKE $1`;
+    let params = [val + "%"];
+    return db.query(q, params);
+};
+
 module.exports.getUserInfo = (email) => {
     let q = `SELECT * FROM users
             WHERE email = $1`;

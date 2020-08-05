@@ -3,6 +3,7 @@ import ProfilePic from "./ProfilePic";
 import Uploader from "./Uploader";
 import { Profile } from "./Profile";
 import { OtherProfile } from "./OtherProfile";
+import FindPeople from "./FindPeople";
 import { BrowserRouter, Route } from "react-router-dom";
 
 import axios from "./axios";
@@ -105,6 +106,7 @@ export default class Home extends Component {
                     )}
                 />
                 <Route path="/user/:id" component={OtherProfile} />
+                <Route path="/users/" component={FindPeople} />
             </BrowserRouter>
         );
     }

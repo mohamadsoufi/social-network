@@ -4,7 +4,7 @@ import axios from "./axios";
 export class BioEditor extends Component {
     constructor(props) {
         super(props);
-        console.log("props in bio const :", props);
+        // console.log("props in bio const :", props);
         this.state = {
             mode: "read",
             bio: "",

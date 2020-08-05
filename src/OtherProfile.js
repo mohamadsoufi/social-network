@@ -34,6 +34,7 @@ export class OtherProfile extends Component {
                             {this.state.first}
                             {this.state.last}
                         </p>
+                        <h2>{this.state.bio}</h2>
                     </div>
 
                     <div className="profile-right-side">

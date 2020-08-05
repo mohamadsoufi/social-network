@@ -237,6 +237,28 @@ app.post("/update-bio", function (req, res) {
     });
 });
 
+app.get("/recent-users", async (req, res) => {
+    try {
+        const { rows } = await db.getRecentUsers();
+
+        res.json(rows);
+    } catch (error) {
+        console.log("error in users :", error);
+    }
+});
+
+app.get("/users/:userInput.json", async (req, res) => {
+    const { userInput } = req.params;
+    try {
+        const { rows } = await db.getUsers(userInput);
+        console.log("rows in server userinput) :", rows);
+
+        res.json(rows);
+    } catch (error) {
+        console.log("error in users :", error);
+    }
+});
+
 app.get("/logout", function (req, res) {
     req.session.userId = null;
     res.redirect("/login");
