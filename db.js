@@ -16,7 +16,7 @@ module.exports.addUserPic = (url, id) => {
     let q = ` UPDATE users
             SET profile_pic = $1
             WHERE id = $2
-            RETURNING profile_pic, id;`;
+            RETURNING profile_pic, id`;
     let params = [url, id];
     return db.query(q, params);
 };
@@ -25,7 +25,7 @@ module.exports.updateBio = (bio, id) => {
     let q = ` UPDATE users
             SET bio = $1
             WHERE id = $2
-            RETURNING bio, id;`;
+            RETURNING bio, id`;
     let params = [bio, id];
     return db.query(q, params);
 };
@@ -38,6 +38,39 @@ module.exports.getRecentUsers = () => {
 module.exports.getUsers = (val) => {
     let q = `SELECT * FROM users WHERE first ILIKE $1`;
     let params = [val + "%"];
+    return db.query(q, params);
+};
+
+module.exports.checkFriendship = (viewedUserId, profileOwnerId) => {
+    let q = `SELECT * FROM friendships
+  WHERE (recipient_id = $1 AND sender_id = $2)
+  OR (recipient_id = $2 AND sender_id = $1)`;
+    let params = [viewedUserId, profileOwnerId];
+    return db.query(q, params);
+};
+
+module.exports.sendFriendshipReq = (viewedUserId, profileOwnerId) => {
+    let q = `INSERT INTO friendships
+             (sender_id, recipient_id)
+             VALUES ($1, $2)
+             RETURNING *`;
+    let params = [viewedUserId, profileOwnerId];
+    return db.query(q, params);
+};
+
+module.exports.updateFriendship = (viewedUserId, profileOwnerId, val) => {
+    let q = `UPDATE friendships
+            SET accepted = $3
+            WHERE (recipient_id = $1 AND sender_id = $2)`;
+    let params = [viewedUserId, profileOwnerId, val];
+    return db.query(q, params);
+};
+
+module.exports.deleteFriendship = (viewedUserId, profileOwnerId) => {
+    let q = `DELETE FROM friendships
+             WHERE (recipient_id = $1 AND sender_id = $2)
+             OR (recipient_id = $2 AND sender_id = $1)`;
+    let params = [viewedUserId, profileOwnerId];
     return db.query(q, params);
 };
 

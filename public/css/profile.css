@@ -47,6 +47,11 @@
     border-radius: 50%;
 }
 
+.new-friend-icon {
+    width: 40px;
+    height: 40px;
+}
+
 .bio-textarea {
     padding: 25px;
     width: fit-content;

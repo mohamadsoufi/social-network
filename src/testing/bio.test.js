@@ -1,9 +1,9 @@
 import React from "react";
 import { render, waitForElement, fireEvent } from "@testing-library/react";
-import axios from "./axios";
-import { BioEditor } from "./BioEditor";
+import axios from "../axios";
+import { BioEditor } from "../BioEditor";
 
-jest.mock("./axios");
+jest.mock("../axios");
 
 // When no bio is passed to it, an "Add" button is rendered.
 

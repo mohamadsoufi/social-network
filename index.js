@@ -116,7 +116,7 @@ app.post("/login", function (req, res) {
             compare(password, hashedPw)
                 .then((matchValue) => {
                     if (matchValue) {
-                        console.log("matchValue :", matchValue);
+                        // console.log("matchValue :", matchValue);
                         req.session.userId = id;
                         res.json({ success: true });
                     } else {
@@ -141,10 +141,10 @@ app.post("/reset-password", function (req, res) {
                 let subj = "This is your Code.";
                 db.addCodeAndEmail([text, to])
                     .then(() => {
-                        console.log("text inside add code to db:", text);
+                        // console.log("text inside add code to db:", text);
                         ses.sendEmail(to, text, subj)
                             .then((resp) => {
-                                console.log("resp in send email :", resp);
+                                // console.log("resp in send email :", resp);
                                 res.json({ step: true });
                             })
                             .catch((err) => {
@@ -216,18 +216,13 @@ app.get("/user/:id.json", async (req, res) => {
 });
 
 app.post("/upload", uploader.single("file"), s3.upload, function (req, res) {
-    // console.log("req.body in upload :", req.body);
-    // console.log("req.file :", req.file);
     const { filename } = req.file;
     const url = s3Url + filename;
-    // console.log("url :", url);
     db.addUserPic(url, req.session.userId).then(({ rows }) => {
-        // console.log("rows :", rows);
         res.json(rows[0].profile_pic);
 
         // res.json({rows[0].url})
     });
-    // res.send("POST request to the homepage");
 });
 
 app.post("/update-bio", function (req, res) {
@@ -251,11 +246,72 @@ app.get("/users/:userInput.json", async (req, res) => {
     const { userInput } = req.params;
     try {
         const { rows } = await db.getUsers(userInput);
-        console.log("rows in server userinput) :", rows);
 
         res.json(rows);
     } catch (error) {
         console.log("error in users :", error);
+    }
+});
+
+app.get("/check-friendship/:id", async (req, res) => {
+    try {
+        let viewedUserId = req.params.id;
+        let profileOwnerId = req.session.userId;
+
+        let { rows } = await db.checkFriendship(viewedUserId, profileOwnerId);
+        if (rows.length == 0) {
+            res.json({ text: "add" });
+        } else if (rows[0].accepted === false) {
+            if (rows[0].recipient_id === profileOwnerId) {
+                res.json({ text: "cancel" });
+            } else {
+                res.json({ text: "accept" });
+            }
+        } else if (rows[0].accepted === true) {
+            res.json({ text: "unfriend" });
+        }
+    } catch (error) {
+        console.log("error in check friendship / GET :", error);
+    }
+});
+
+app.post("/check-friendship", async (req, res) => {
+    try {
+        let btnText = req.body.text;
+        let viewedUserId = req.body.id;
+        let profileOwnerId = req.session.userId;
+        if (btnText === "add") {
+            let { rows } = await db.sendFriendshipReq(
+                viewedUserId,
+                profileOwnerId
+            );
+
+            if (rows[0].accepted === false) {
+                res.json({ text: "cancel" });
+            }
+        } else if (btnText == "cancel" || btnText == "unfriend") {
+            try {
+                let { rows } = await db.deleteFriendship(
+                    viewedUserId,
+                    profileOwnerId
+                );
+
+                if (rows.length == 0) {
+                    res.json({ text: "add" });
+                }
+            } catch (error) {
+                console.log("error in check-friendship/ Post cancel:", error);
+            }
+        } else if (btnText == "accept") {
+            try {
+                await db.updateFriendship(viewedUserId, profileOwnerId, true);
+                res.json({ text: "unfriend" });
+            } catch (error) {
+                console.log("error in check-friendship accept/ Post :", error);
+            }
+        }
+    } catch (error) {
+        console.log("error in check friendship / POST :", error);
     }
 });
 

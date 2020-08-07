@@ -106,23 +106,5 @@ export default class ResetPassword extends React.Component {
                 </Fragment>
             );
         }
-
-        // return (
-        //     <div>
-        //         {step == 1 && (
-        //             <div>
-        //                 <h2>Reset Password</h2>
-        //                 <input
-        //                     onChange={(e) => this.handleChange(e)}
-        //                     placeholder="email"
-        //                     name="email"
-        //                 />
-        //                 <button onClick={() => this.submit()}>Submit</button>
-        //             </div>
-        //         )}
-        //         {step == 2 && <checkCode />}
-        //         {step == 3 && <div></div>}
-        //     </div>
-        // );
     }
 }

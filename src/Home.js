@@ -4,7 +4,7 @@ import Uploader from "./Uploader";
 import { Profile } from "./Profile";
 import { OtherProfile } from "./OtherProfile";
 import FindPeople from "./FindPeople";
-import { BrowserRouter, Route } from "react-router-dom";
+import { BrowserRouter, Route, Link } from "react-router-dom";
 
 import axios from "./axios";
 
@@ -63,7 +63,13 @@ export default class Home extends Component {
             <BrowserRouter>
                 <div className="header">
                     <div>
-                        <img src="/logo.png" style={styles.image} alt="logo" />
+                        <Link to="/">
+                            <img
+                                src="/logo.png"
+                                style={styles.image}
+                                alt="logo"
+                            />
+                        </Link>
                     </div>
                     <div className="header-right">
                         <div className="header-titles">

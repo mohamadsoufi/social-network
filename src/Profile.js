@@ -12,6 +12,7 @@ export function Profile(props) {
         <div>
             <div className="profile-content-container">
                 <div className="profile-username">
+                    <h1>My Profile</h1>
                     <p>
                         {first}
                         {last}
