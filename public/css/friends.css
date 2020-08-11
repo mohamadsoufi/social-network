@@ -1,0 +1,19 @@
+.wannabes-list,
+.friends-list {
+    margin-top: 100px;
+    margin-left: 50px;
+    font-weight: 900;
+    border-bottom: black solid 1px;
+    width: 50%;
+}
+
+/* .friends-list {
+} */
+
+.wannabes-list {
+    margin-bottom: 50px;
+}
+
+.reject-btn {
+    background-color: brown;
+}

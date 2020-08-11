@@ -11,7 +11,7 @@ const secretCode = cryptoRandomString({
 const { s3Url } = require("./config.json");
 const s3 = require("./s3");
 
-// const { sendEmail } = require("./src/ses");
+const { sendEmail } = require("./src/ses");
 let csurf = require("csurf");
 
 const { hash, compare } = require("./bc.js");
@@ -108,8 +108,10 @@ app.post("/register", (req, res) => {
 
 app.post("/login", function (req, res) {
     let { email, password } = req.body;
+    console.log("password in body :", password);
     db.getUserInfo(email)
         .then(({ rows }) => {
+            console.log("rows  :", rows);
             let hashedPw = rows[0].password;
             let id = rows[0].id;
 
@@ -312,6 +314,18 @@ app.post("/check-friendship", async (req, res) => {
         }
     } catch (error) {
         console.log("error in check friendship / POST :", error);
+    }
+});
+
+app.get("/friends-wannabes", async (req, res) => {
+    // console.log("req.body in friends :", req.body);
+    // console.log("req.session.userId :", req.session.userId);
+    try {
+        const { rows } = await db.getFriends(req.session.userId);
+        // console.log("rows in get friends :", rows);
+        res.json(rows);
+    } catch (error) {
+        console.log("error in freinds-wannabes/GET :", error);
     }
 });
 

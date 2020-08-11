@@ -4,6 +4,7 @@ import Uploader from "./Uploader";
 import { Profile } from "./Profile";
 import { OtherProfile } from "./OtherProfile";
 import FindPeople from "./FindPeople";
+import Friends from "./Friends";
 import { BrowserRouter, Route, Link } from "react-router-dom";
 
 import axios from "./axios";
@@ -73,6 +74,7 @@ export default class Home extends Component {
                     </div>
                     <div className="header-right">
                         <div className="header-titles">
+                            <Link to="/friends">Friends</Link>
                             <a className="header-links" href="/logout">
                                 log out
                             </a>
@@ -113,6 +115,7 @@ export default class Home extends Component {
                 />
                 <Route path="/user/:id" component={OtherProfile} />
                 <Route path="/users/" component={FindPeople} />
+                <Route path="/friends/" component={Friends} />
             </BrowserRouter>
         );
     }

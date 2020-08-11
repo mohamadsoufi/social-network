@@ -75,7 +75,7 @@ export class BioEditor extends Component {
                     </button>
                 </div>
             );
-        } else if (this.props.bio) {
+        } else if (this.props.bio || this.state.bio) {
             return (
                 <div className="bio-text-container">
                     <h2>{this.props.bio}</h2>
@@ -92,12 +92,13 @@ export class BioEditor extends Component {
             );
         } else if (this.state.bio === "") {
             return (
-                <div>
+                <div className="bio-text-container">
                     {this.state.error && (
                         <div className="error">Oops! try again!.</div>
                     )}
 
                     <button
+                        className="edit-bio-btn"
                         onClick={() => {
                             this.editMode();
                         }}

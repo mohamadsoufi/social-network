@@ -2,29 +2,6 @@ import React from "react";
 import axios from "./axios";
 import { Link } from "react-router-dom";
 
-// const styles = {
-//     wrapper: {
-//         width: "200px",
-//         margin: "0 auto",
-//     },
-//     btn: {
-//         display: "flex",
-//         alignItems: "center",
-//         justifyContent: "center",
-//         border: "none",
-//         textDecoration: "none",
-//         color: "blue",
-//         backgroundColor: "white",
-//         fontSize: "15px",
-//         fontWeight: "bold",
-//         width: "200px",
-//         textTransform: "upperCase",
-//         padding: "20px",
-//         transition: "all 0.4s ease 0s",
-//         cursor: "pointer",
-//     },
-// };
-
 export default class Register extends React.Component {
     constructor(props) {
         super(props);
@@ -93,7 +70,6 @@ export default class Register extends React.Component {
 
                 <Link to="/login"> login </Link>
                 <Link to="/reset-password"> reset password </Link>
-                <a href="/logout">logout</a>
             </div>
         );
     }

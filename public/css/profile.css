@@ -80,7 +80,7 @@
 button {
     color: white;
     background-color: rgb(5, 5, 173);
-    margin: 0 auto;
+    margin: 20px 10px;
     padding: 0 15px;
     text-decoration: none;
     text-transform: uppercase;
@@ -95,6 +95,6 @@ button {
 
 button:hover {
     color: rgba(0, 0, 0, 0.705);
-    background-color: rgba(179, 177, 177, 0.144);
+    background-color: rgba(179, 177, 177, 0.383);
     border-radius: 20px;
 }

@@ -49,7 +49,7 @@ module.exports.checkFriendship = (viewedUserId, profileOwnerId) => {
     return db.query(q, params);
 };
 
-module.exports.sendFriendshipReq = (viewedUserId, profileOwnerId) => {
+module.exports.sendFriendshipReq = (profileOwnerId, viewedUserId) => {
     let q = `INSERT INTO friendships
              (sender_id, recipient_id)
              VALUES ($1, $2)
@@ -61,7 +61,8 @@ module.exports.sendFriendshipReq = (viewedUserId, profileOwnerId) => {
 module.exports.updateFriendship = (viewedUserId, profileOwnerId, val) => {
     let q = `UPDATE friendships
             SET accepted = $3
-            WHERE (recipient_id = $1 AND sender_id = $2)`;
+            WHERE (recipient_id = $1 AND sender_id = $2)
+            OR (recipient_id = $2 AND sender_id = $1)`;
     let params = [viewedUserId, profileOwnerId, val];
     return db.query(q, params);
 };
@@ -71,6 +72,17 @@ module.exports.deleteFriendship = (viewedUserId, profileOwnerId) => {
              WHERE (recipient_id = $1 AND sender_id = $2)
              OR (recipient_id = $2 AND sender_id = $1)`;
     let params = [viewedUserId, profileOwnerId];
+    return db.query(q, params);
+};
+
+module.exports.getFriends = (id) => {
+    let q = `SELECT users.id, first, last, profile_pic, accepted
+        FROM friendships
+        JOIN users
+        ON (accepted = false AND recipient_id = $1 AND sender_id = users.id)
+        OR (accepted = true AND recipient_id = $1 AND sender_id = users.id)
+        OR (accepted = true AND sender_id = $1 AND recipient_id = users.id)`;
+    let params = [id];
     return db.query(q, params);
 };
 
