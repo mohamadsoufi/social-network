@@ -1,22 +1,32 @@
 import React, { Component, Fragment } from "react";
+import { BrowserRouter, Route, Link } from "react-router-dom";
 import ProfilePic from "./ProfilePic";
 import Uploader from "./Uploader";
 import { Profile } from "./Profile";
 import { OtherProfile } from "./OtherProfile";
 import FindPeople from "./FindPeople";
 import Friends from "./Friends";
-import { BrowserRouter, Route, Link } from "react-router-dom";
+import Chat from "./Chat";
 
 import axios from "./axios";
+import { connect } from "react-redux";
 
-const styles = {
-    image: {
-        width: "100px",
-        height: "100px",
-    },
-};
-
-export default class Home extends Component {
+//using Redux with class:
+//use mapStateToProps then connect
+function mapStateToProps(state) {
+    return {
+        wannabes:
+            state.friendsWannabes &&
+            state.friendsWannabes.filter((friend) => {
+                if (friend.accepted === false) {
+                    return friend;
+                } else {
+                    return null;
+                }
+            }),
+    };
+}
+class Home extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -60,6 +70,7 @@ export default class Home extends Component {
     }
 
     render() {
+        console.log("this.props.wannabes :", this.props.wannabes);
         return (
             <BrowserRouter>
                 <div className="header">
@@ -67,14 +78,25 @@ export default class Home extends Component {
                         <Link to="/">
                             <img
                                 src="/logo.png"
-                                style={styles.image}
+                                className="profile-pic-small"
                                 alt="logo"
                             />
                         </Link>
                     </div>
                     <div className="header-right">
                         <div className="header-titles">
+                            {this.props.wannabes && (
+                                <div>
+                                    {!!this.props.wannabes.length && (
+                                        <img
+                                            className="new-friend-icon"
+                                            src="../follow.png"
+                                        />
+                                    )}
+                                </div>
+                            )}
                             <Link to="/friends">Friends</Link>
+                            <Link to="/users">Find friends</Link>
                             <a className="header-links" href="/logout">
                                 log out
                             </a>
@@ -116,7 +138,9 @@ export default class Home extends Component {
                 <Route path="/user/:id" component={OtherProfile} />
                 <Route path="/users/" component={FindPeople} />
                 <Route path="/friends/" component={Friends} />
+                <Route path="/chat/" component={Chat} />
             </BrowserRouter>
         );
     }
 }
+export default connect(mapStateToProps)(Home);

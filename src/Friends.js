@@ -75,7 +75,6 @@ export default function Friends() {
                             <span>{wannabe.first}</span> {wannabe.last}
                         </p>
                     </div>
-                    <img className="new-friend-icon" src="../follow.png" />
                     <button
                         onClick={() =>
                             dispatch(acceptFriendRequest("accept", wannabe.id))

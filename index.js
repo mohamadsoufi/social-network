@@ -10,13 +10,12 @@ const secretCode = cryptoRandomString({
 });
 const { s3Url } = require("./config.json");
 const s3 = require("./s3");
-
 const { sendEmail } = require("./src/ses");
-let csurf = require("csurf");
-
+const csurf = require("csurf");
 const { hash, compare } = require("./bc.js");
-
 const cookieSession = require("cookie-session");
+const server = require("http").Server(app);
+const io = require("socket.io")(server, { origins: "localhost:8080" });
 
 app.use(
     cookieSession({
@@ -25,22 +24,50 @@ app.use(
     })
 );
 
+//socket setup
+
+const cookieSessionMiddleware = cookieSession({
+    secret: `I'm always angry.`,
+    maxAge: 1000 * 60 * 60 * 24 * 90,
+});
+app.use(cookieSessionMiddleware);
+io.use(function (socket, next) {
+    cookieSessionMiddleware(socket.request, socket.request.res, next);
+});
+
+io.on("connection", (socket) => {
+    const userId = socket.request.session.userId;
+    console.log("connected");
+    if (!userId) {
+        return socket.disconnect();
+    }
+
+    socket.on("chatMessage", async (data) => {
+        const { rows } = await db.getUserById(userId);
+        console.log("rows :", rows);
+        console.log("data :", data);
+
+        io.emit("chatMessage");
+    });
+});
+
 app.use(bodyParser.json());
 
 app.use(express.static("public"));
 
-app.use(csurf());
-app.use(function (req, res, next) {
-    res.cookie("mytoken", req.csrfToken());
-    next();
-});
+// app.use(csurf());
+// app.use(function (req, res, next) {
+//     res.cookie("mytoken", req.csrfToken());
+//     next();
+// });
+
+// app.use(function (req, res, next) {
+//     res.setHeader("x-frame-options", "deny");
+//     res.locals.csrfToken = req.csrfToken();
+//     next();
+// });
 
 module.exports = { app };
-app.use(function (req, res, next) {
-    res.setHeader("x-frame-options", "deny");
-    res.locals.csrfToken = req.csrfToken();
-    next();
-});
 
 app.use(compression());
 

@@ -44,3 +44,34 @@ export async function unfriend(text, id) {
         console.log("err in receive friendsWannabes action :", err);
     }
 }
+
+export async function chatMessages(msgs) {
+    try {
+        let info = {
+            msgs,
+        };
+        let { data } = await axios.post("/messages", info);
+        return {
+            type: "CHAT_MESSAGES",
+            userId: data.userId,
+            //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+        };
+    } catch (err) {
+        console.log("err in receive friendsWannabes action :", err);
+    }
+}
+
+export async function chatMessage(msg) {
+    try {
+        let info = {
+            msg,
+        };
+        let { data } = await axios.post("/message", info);
+        return {
+            type: "CHAT_MESSAGE",
+            data,
+        };
+    } catch (err) {
+        console.log("err in receive friendsWannabes action :", err);
+    }
+}

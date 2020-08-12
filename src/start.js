@@ -9,6 +9,7 @@ import { Provider } from "react-redux";
 import reduxPromise from "redux-promise";
 import { composeWithDevTools } from "redux-devtools-extension";
 import reducer from "./Redux/reducer";
+import { init } from "./socket.js";
 
 const store = createStore(
     reducer,
@@ -24,20 +25,9 @@ if (isLoggedIn) {
             <Home />
         </Provider>
     );
+    init(store);
 } else {
     elem = <Welcome />;
 }
 
 ReactDOM.render(elem, document.querySelector("main"));
-
-// export default
-
-// function HelloWorld() {
-//     const style = {
-//         color: "tomato",
-//         fontSize: "20px"
-//     };
-//     return (
-//         <div style={style}>Hello, World!</div>
-//     );
-// }

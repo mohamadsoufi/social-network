@@ -20,15 +20,15 @@ body {
     color: rgb(5, 5, 173);
 }
 
-.header-titles:hover {
+.header-titles a:hover {
     color: rgba(0, 0, 0, 0.705);
     background-color: rgba(179, 177, 177, 0.144);
     border-radius: 20px;
 }
 
 .header-titles {
-    padding: 25px 10px;
-    margin: 10px 25px;
+    padding: 0 10px;
+    margin: 0 25px;
     font-size: 25px;
     font-weight: 700;
 }

@@ -124,11 +124,12 @@ module.exports.updatePassword = function (hashedPw, email) {
     return db.query(q, params);
 };
 
-//  SELECT * FROM password_reset_codes
-//             WHERE email = mohamad.soufii@outlook.com
-//             AND WHERE CURRENT_TIMESTAMP - created_at < INTERVAL '10 minutes'
-//             ORDER BY created_at DESC
-//             LIMIT 1;
+// SOCKET
 
-//             `SELECT * FROM password_reset_codes
-// WHERE CURRENT_TIMESTAMP - created_at < INTERVAL '10 minutes'
+module.exports.getUserById = (userId) => {
+    let q = `SELECT * FROM users
+            JOIN chat_messages
+            ON (sender_id = $1)
+            RETURNING *`;
+    return db.query(q, [userId]);
+};
