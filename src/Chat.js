@@ -10,7 +10,9 @@ export default function Chat(props) {
     const elemRef = useRef();
 
     const msgs = useSelector(
-        (state) => state.chatMessages && state.chatMessages
+        (state) =>
+            state.chatMessages &&
+            state.chatMessages.sort((a, b) => new Date(a.ts) - new Date(b.ts))
     );
 
     const msg = useSelector(
@@ -34,7 +36,7 @@ export default function Chat(props) {
 
     useEffect(() => {
         socket.emit("chatMessages");
-    }, [chatMessages]);
+    }, [chatMessage]);
 
     let changeClass = (msg) => {
         if (msg.id !== id) {
@@ -74,6 +76,11 @@ export default function Chat(props) {
             </div>
         );
     };
+    const sendMsg = (e) => {
+        e.target.value = "";
+        socket.emit("chatMessage", chatMessage);
+        e.preventDefault();
+    };
 
     return (
         <>
@@ -81,16 +88,16 @@ export default function Chat(props) {
             <div id="chat-messages" ref={elemRef}>
                 {msg && msg.map((msg, i) => messageMaker(msg, i))}
             </div>
-            <input
-                name="chatArea"
-                id="chatArea"
-                cols="30"
-                rows="1"
-                onChange={(e) => setChatMessage(e.target.value)}
-            ></input>
-            <button onClick={() => socket.emit("chatMessage", chatMessage)}>
-                Send
-            </button>
+            <form>
+                <input
+                    name="chatArea"
+                    id="chatArea"
+                    cols="30"
+                    rows="1"
+                    onChange={(e) => setChatMessage(e.target.value)}
+                ></input>
+                <button onClick={(e) => sendMsg(e)}>Send</button>
+            </form>
         </>
     );
 }
