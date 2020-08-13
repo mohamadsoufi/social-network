@@ -49,6 +49,7 @@ export default function reducer(state = {}, action) {
         state = {
             ...state,
             chatMessages: action.chatMessages,
+            id: action.id,
         };
     }
 

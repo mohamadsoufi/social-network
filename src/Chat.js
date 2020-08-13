@@ -6,15 +6,23 @@ import { Link } from "react-router-dom";
 export default function Chat(props) {
     const [chatMessage, setChatMessage] = useState();
     const [chatMessages, setChatMessages] = useState();
+
     const elemRef = useRef();
 
     const msgs = useSelector(
-        (state) => state.chatMessages && state.chatMessages.map((msg) => msg)
+        (state) => state.chatMessages && state.chatMessages
     );
 
     const msg = useSelector(
         (state) => state.chatMessage && state.chatMessage.map((msg) => msg)
     );
+
+    const id = useSelector((state) => state.id && state.id[0].userId);
+    console.log("id in chat :", id);
+    // const userMsgId = () =>
+    //     msg.map((msg) => {
+    //         console.log("msg.id :", msg.id);
+    //     });
 
     console.log("msg in client :", msg);
     console.log("msgs in client :", msgs);
@@ -25,12 +33,28 @@ export default function Chat(props) {
     }, [chatMessage]);
 
     useEffect(() => {
-        socket.emit("chatMessages", chatMessages);
-    }, []);
+        socket.emit("chatMessages");
+    }, [chatMessages]);
+
+    let changeClass = (msg) => {
+        if (msg.id !== id) {
+            return "user-chat-container";
+        } else {
+            return "chat-container";
+        }
+    };
+
     const messageMaker = (msg, i) => {
         return (
-            <div className="chat-container" key={i}>
-                <img className="chat-profile-pic-small" src={msg.profile_pic} />
+            <div className={changeClass(msg)} key={i}>
+                {msg.profile_pic ? (
+                    <img
+                        className="chat-profile-pic-small"
+                        src={msg.profile_pic}
+                    />
+                ) : (
+                    <img className="chat-profile-pic-small" src="../user.png" />
+                )}
                 <Link to={`/user/${msg.id}`}>
                     <div className="chat-profile-username">
                         <div>
@@ -41,7 +65,6 @@ export default function Chat(props) {
                         </div>
                     </div>
                 </Link>
-
                 <div className="chat-profile-msg">
                     <p>{msg.message}</p>
                 </div>
@@ -59,7 +82,6 @@ export default function Chat(props) {
                 {msg && msg.map((msg, i) => messageMaker(msg, i))}
             </div>
             <input
-                className
                 name="chatArea"
                 id="chatArea"
                 cols="30"

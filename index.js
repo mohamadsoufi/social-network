@@ -36,17 +36,17 @@ app.use(bodyParser.json());
 
 app.use(express.static("public"));
 
-// app.use(csurf());
-// app.use(function (req, res, next) {
-//     res.cookie("mytoken", req.csrfToken());
-//     next();
-// });
+app.use(csurf());
+app.use(function (req, res, next) {
+    res.cookie("mytoken", req.csrfToken());
+    next();
+});
 
-// app.use(function (req, res, next) {
-//     res.setHeader("x-frame-options", "deny");
-//     res.locals.csrfToken = req.csrfToken();
-//     next();
-// });
+app.use(function (req, res, next) {
+    res.setHeader("x-frame-options", "deny");
+    res.locals.csrfToken = req.csrfToken();
+    next();
+});
 
 module.exports = { app };
 
@@ -368,6 +368,7 @@ io.on("connection", (socket) => {
 
     socket.on("chatMessages", async (data) => {
         let { rows } = await db.getMessages();
+        rows.unshift({ userId });
         io.emit("chatMessages", rows);
     });
 });
