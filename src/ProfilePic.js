@@ -1,7 +1,6 @@
 import React, { Fragment } from "react";
 
 export default function ProfilePic(props) {
-    // console.log("props in ProfilePic: ", props);
     let { first, last, imgUrl } = props;
     imgUrl = imgUrl || "../user.png";
 

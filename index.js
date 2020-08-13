@@ -31,25 +31,6 @@ const cookieSessionMiddleware = cookieSession({
     maxAge: 1000 * 60 * 60 * 24 * 90,
 });
 app.use(cookieSessionMiddleware);
-io.use(function (socket, next) {
-    cookieSessionMiddleware(socket.request, socket.request.res, next);
-});
-
-io.on("connection", (socket) => {
-    const userId = socket.request.session.userId;
-    console.log("connected");
-    if (!userId) {
-        return socket.disconnect();
-    }
-
-    socket.on("chatMessage", async (data) => {
-        const { rows } = await db.getUserById(userId);
-        console.log("rows :", rows);
-        console.log("data :", data);
-
-        io.emit("chatMessage");
-    });
-});
 
 app.use(bodyParser.json());
 
@@ -135,17 +116,14 @@ app.post("/register", (req, res) => {
 
 app.post("/login", function (req, res) {
     let { email, password } = req.body;
-    console.log("password in body :", password);
     db.getUserInfo(email)
         .then(({ rows }) => {
-            console.log("rows  :", rows);
             let hashedPw = rows[0].password;
             let id = rows[0].id;
 
             compare(password, hashedPw)
                 .then((matchValue) => {
                     if (matchValue) {
-                        // console.log("matchValue :", matchValue);
                         req.session.userId = id;
                         res.json({ success: true });
                     } else {
@@ -345,8 +323,6 @@ app.post("/check-friendship", async (req, res) => {
 });
 
 app.get("/friends-wannabes", async (req, res) => {
-    // console.log("req.body in friends :", req.body);
-    // console.log("req.session.userId :", req.session.userId);
     try {
         const { rows } = await db.getFriends(req.session.userId);
         // console.log("rows in get friends :", rows);
@@ -369,6 +345,29 @@ app.get("*", function (req, res) {
     }
 });
 
-app.listen(8080, function () {
+server.listen(8080, function () {
     console.log("I'm listening.");
+});
+
+//socket routes
+io.use(function (socket, next) {
+    cookieSessionMiddleware(socket.request, socket.request.res, next);
+});
+
+io.on("connection", (socket) => {
+    const userId = socket.request.session.userId;
+    if (!userId) {
+        return socket.disconnect();
+    }
+
+    socket.on("chatMessage", async (data) => {
+        await db.addMessageById(userId, data);
+        let { rows } = await db.getUserById(userId);
+        io.emit("chatMessage", rows);
+    });
+
+    socket.on("chatMessages", async (data) => {
+        let { rows } = await db.getMessages();
+        io.emit("chatMessages", rows);
+    });
 });

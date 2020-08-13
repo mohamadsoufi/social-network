@@ -118,7 +118,7 @@ module.exports.checkCode = (params) => {
 
 module.exports.updatePassword = function (hashedPw, email) {
     let q = `UPDATE users 
-            SET password =$1
+             SET password =$1
              WHERE email = $2 `;
     let params = [hashedPw, email];
     return db.query(q, params);
@@ -126,10 +126,27 @@ module.exports.updatePassword = function (hashedPw, email) {
 
 // SOCKET
 
-module.exports.getUserById = (userId) => {
-    let q = `SELECT * FROM users
-            JOIN chat_messages
-            ON (sender_id = $1)
-            RETURNING *`;
-    return db.query(q, [userId]);
+module.exports.getUserById = (sender_id) => {
+    let q = `SELECT * FROM chat_messages
+           JOIN users
+            ON (sender_id = $1 AND users.id = $1)
+            ORDER BY ts DESC
+            LIMIT 1`;
+    return db.query(q, [sender_id]);
+};
+
+module.exports.addMessageById = (sender_id, msg) => {
+    let q = `INSERT INTO chat_messages
+             (sender_id, message)
+             VALUES ($1, $2)`;
+    return db.query(q, [sender_id, msg]);
+};
+
+module.exports.getMessages = () => {
+    let q = `SELECT * FROM chat_messages
+           JOIN users
+            ON (sender_id = users.id)
+            ORDER BY ts DESC
+            LIMIT 10`;
+    return db.query(q);
 };

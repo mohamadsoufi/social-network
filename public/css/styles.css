@@ -20,6 +20,10 @@ body {
     color: rgb(5, 5, 173);
 }
 
+.header-titles a {
+    text-decoration: none;
+}
+
 .header-titles a:hover {
     color: rgba(0, 0, 0, 0.705);
     background-color: rgba(179, 177, 177, 0.144);

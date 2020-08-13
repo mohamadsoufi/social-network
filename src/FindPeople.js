@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ReactDom from "react-dom";
 import axios from "./axios";
-// const db = require("../db");
+import { Link } from "react-router-dom";
 
 export default function FindPeople() {
     const [userInput, setUserInput] = useState("");
@@ -28,6 +28,7 @@ export default function FindPeople() {
                 let { data } = await axios.get(`/users/${userInput}.json`);
                 if (!abort) {
                     if (data[0].first) {
+                        console.log("data in find people :", data);
                         setUsers(data);
                     }
                 }
@@ -50,14 +51,16 @@ export default function FindPeople() {
             <input value={userInput} name="users" onChange={handleChange} />
             {users &&
                 users.map((user, i) => {
-                    let { first, last, profile_pic } = user;
+                    let { first, last, profile_pic, id } = user;
                     return (
                         <div key={i} className="users">
-                            <img
-                                className="profile-pic-small"
-                                src={profile_pic}
-                                alt={first}
-                            />
+                            <Link to={`/user/${id}`}>
+                                <img
+                                    className="profile-pic-small"
+                                    src={profile_pic}
+                                    alt={first}
+                                />
+                            </Link>
                             <div className="profile-username">
                                 <p>
                                     <span>{first}</span> {last}

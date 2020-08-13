@@ -70,7 +70,6 @@ class Home extends Component {
     }
 
     render() {
-        console.log("this.props.wannabes :", this.props.wannabes);
         return (
             <BrowserRouter>
                 <div className="header">
@@ -95,6 +94,7 @@ class Home extends Component {
                                     )}
                                 </div>
                             )}
+                            <Link to="/chat">chat</Link>
                             <Link to="/friends">Friends</Link>
                             <Link to="/users">Find friends</Link>
                             <a className="header-links" href="/logout">
