@@ -31,6 +31,8 @@
     align-self: center;
     justify-self: end;
     margin: 20px 100px;
+    display: flex;
+    flex-direction: column;
 }
 
 .profile-pic-small {

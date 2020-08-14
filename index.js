@@ -269,7 +269,7 @@ app.get("/check-friendship/:id", async (req, res) => {
         if (rows.length == 0) {
             res.json({ text: "add" });
         } else if (rows[0].accepted === false) {
-            if (rows[0].recipient_id === profileOwnerId) {
+            if (rows[0].recipient_id !== profileOwnerId) {
                 res.json({ text: "cancel" });
             } else {
                 res.json({ text: "accept" });
