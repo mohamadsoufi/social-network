@@ -354,7 +354,7 @@ io.use(function (socket, next) {
     cookieSessionMiddleware(socket.request, socket.request.res, next);
 });
 
-io.on("connection", (socket) => {
+io.on("connection", async (socket) => {
     const userId = socket.request.session.userId;
     if (!userId) {
         return socket.disconnect();
@@ -363,12 +363,13 @@ io.on("connection", (socket) => {
     socket.on("chatMessage", async (data) => {
         await db.addMessageById(userId, data);
         let { rows } = await db.getUserById(userId);
-        io.emit("chatMessage", rows);
+        io.emit("chatMessage", rows[0]);
     });
-
-    socket.on("chatMessages", async (data) => {
+    try {
         let { rows } = await db.getMessages();
         rows.unshift({ userId });
-        io.emit("chatMessages", rows);
-    });
+        socket.emit("chatMessages", rows);
+    } catch (error) {
+        console.log("error in socket :", error);
+    }
 });

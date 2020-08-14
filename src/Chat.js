@@ -15,48 +15,52 @@ export default function Chat(props) {
             state.chatMessages.sort((a, b) => new Date(a.ts) - new Date(b.ts))
     );
 
-    const msg = useSelector(
-        (state) => state.chatMessage && state.chatMessage.map((msg) => msg)
-    );
-
     const id = useSelector((state) => state.id && state.id[0].userId);
-    console.log("id in chat :", id);
-    // const userMsgId = () =>
-    //     msg.map((msg) => {
-    //         console.log("msg.id :", msg.id);
-    //     });
-
-    console.log("msg in client :", msg);
-    console.log("msgs in client :", msgs);
 
     useEffect(() => {
         elemRef.current.scrollTop =
             elemRef.current.scrollHeight - elemRef.current.scrollHeight;
-    }, [chatMessage]);
-
-    useEffect(() => {
-        socket.emit("chatMessages");
-    }, [chatMessage]);
+    }, [msgs]);
 
     let changeClass = (msg) => {
-        if (msg.id !== id) {
+        if (msg.id == id) {
             return "user-chat-container";
         } else {
             return "chat-container";
         }
     };
 
+    const enterMsg = (e) => {
+        if (e.key === "Enter") {
+            socket.emit("chatMessage", chatMessage);
+            chatArea.value = "";
+        }
+    };
+
+    const sendMsg = (e) => {
+        e.preventDefault();
+        socket.emit("chatMessage", chatMessage);
+        chatArea.value = "";
+    };
+
     const messageMaker = (msg, i) => {
+        let time = new Date(msg.ts);
         return (
             <div className={changeClass(msg)} key={i}>
-                {msg.profile_pic ? (
-                    <img
-                        className="chat-profile-pic-small"
-                        src={msg.profile_pic}
-                    />
-                ) : (
-                    <img className="chat-profile-pic-small" src="../user.png" />
-                )}
+                <Link to={`/user/${msg.id}`}>
+                    {msg.profile_pic ? (
+                        <img
+                            className="chat-profile-pic-small"
+                            src={msg.profile_pic}
+                        />
+                    ) : (
+                        <img
+                            className="chat-profile-pic-small"
+                            src="../user.png"
+                        />
+                    )}
+                </Link>
+
                 <Link to={`/user/${msg.id}`}>
                     <div className="chat-profile-username">
                         <div>
@@ -71,33 +75,30 @@ export default function Chat(props) {
                     <p>{msg.message}</p>
                 </div>
                 <div className="chat-date">
-                    <p>{msg.ts.slice(11, 16)}</p>
+                    <p>
+                        {time.toLocaleTimeString([], {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                        })}
+                    </p>
                 </div>
             </div>
         );
     };
-    const sendMsg = (e) => {
-        e.target.value = "";
-        socket.emit("chatMessage", chatMessage);
-        e.preventDefault();
-    };
 
     return (
         <>
-            {msgs && msgs.map((msg, i) => messageMaker(msg, i))}
             <div id="chat-messages" ref={elemRef}>
-                {msg && msg.map((msg, i) => messageMaker(msg, i))}
+                {msgs && msgs.map((msg, i) => messageMaker(msg, i))}
             </div>
-            <form>
-                <input
-                    name="chatArea"
-                    id="chatArea"
-                    cols="30"
-                    rows="1"
-                    onChange={(e) => setChatMessage(e.target.value)}
-                ></input>
-                <button onClick={(e) => sendMsg(e)}>Send</button>
-            </form>
+            <input
+                type="text"
+                name="chatArea"
+                id="chatArea"
+                onKeyDown={(e) => enterMsg(e)}
+                onChange={(e) => setChatMessage(e.target.value)}
+            ></input>
+            <button onClick={(e) => sendMsg(e)}>Send</button>
         </>
     );
 }

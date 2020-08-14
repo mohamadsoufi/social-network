@@ -41,7 +41,7 @@ export default function reducer(state = {}, action) {
     if (action.type == "CHAT_MESSAGE") {
         state = {
             ...state,
-            chatMessage: action.chatMessage,
+            chatMessages: [...state.chatMessages, action.chatMessage],
         };
     }
 

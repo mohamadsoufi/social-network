@@ -86,7 +86,7 @@ class Home extends Component {
                         <div className="header-titles">
                             {this.props.wannabes && (
                                 <div>
-                                    {!!this.props.wannabes.length && (
+                                    {this.props.wannabes.length && (
                                         <img
                                             className="new-friend-icon"
                                             src="../follow.png"
@@ -94,8 +94,8 @@ class Home extends Component {
                                     )}
                                 </div>
                             )}
-                            <Link to="/chat">chat</Link>
                             <Link to="/friends">Friends</Link>
+                            <Link to="/chat">chat</Link>
                             <Link to="/users">Find friends</Link>
                             <a className="header-links" href="/logout">
                                 log out

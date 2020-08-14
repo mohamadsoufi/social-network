@@ -54,8 +54,6 @@ export async function chatMessage(chatMessage) {
 export async function chatMessages(msgs) {
     let id = msgs.slice(0, 1);
     let chatMessages = msgs.slice(1, 10);
-    // console.log("chatMessages :", chatMessages);
-    // console.log("id action :", id);
     return {
         type: "CHAT_MESSAGES",
         chatMessages,
