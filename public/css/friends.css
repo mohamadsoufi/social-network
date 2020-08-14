@@ -17,3 +17,10 @@
 .reject-btn {
     background-color: brown;
 }
+
+.no-friends {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}

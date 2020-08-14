@@ -28,7 +28,7 @@ export function FriendButton(props) {
             try {
                 let info = {
                     text: buttonText.text,
-                    id: id,
+                    id,
                 };
                 if (info.text) {
                     let { data } = await axios.post("/check-friendship", info);

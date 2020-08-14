@@ -21,9 +21,8 @@
     border: 26px solid transparent;
     border-right-color: #00abbb96;
     border-left: 0;
-    border-bottom: 0;
-    margin-top: -13px;
-    margin-left: -26px;
+    border-width: 10px;
+    margin-left: -10px;
 }
 
 .user-chat-container:after {
@@ -34,11 +33,9 @@
     width: 0;
     height: 0;
     border: 26px solid transparent;
-    border-left-color: #00abbb96;
-    border-right: 0;
-    border-bottom: 0;
-    margin-top: -13px;
-    margin-right: -26px;
+    border-left-color: #02b8c854;
+    border-width: 10px;
+    margin-right: -20px;
 }
 
 .user-chat-container {
@@ -83,7 +80,7 @@
 
 .chat-date {
     grid-row: 3 / 4;
-    grid-column: 11 / 13;
+    grid-column: 10 / 13;
     font-size: 12px;
     font-weight: 800;
     margin-right: 0 15px;

@@ -70,6 +70,7 @@ class Home extends Component {
     }
 
     render() {
+        // console.log("this.props.wannabes :", this.props.wannabes);
         return (
             <BrowserRouter>
                 <div className="header">
@@ -86,11 +87,18 @@ class Home extends Component {
                         <div className="header-titles">
                             {this.props.wannabes && (
                                 <div>
-                                    {this.props.wannabes.length && (
-                                        <img
-                                            className="new-friend-icon"
-                                            src="../follow.png"
-                                        />
+                                    {this.props.wannabes.length > 0 && (
+                                        <div className="notification-container">
+                                            <img
+                                                className="new-friend-icon"
+                                                src="../follow.png"
+                                            />
+                                            {this.props.wannabes && (
+                                                <p className="notification-num">
+                                                    {this.props.wannabes.length}
+                                                </p>
+                                            )}
+                                        </div>
                                     )}
                                 </div>
                             )}

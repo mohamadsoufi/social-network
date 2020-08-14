@@ -51,13 +51,6 @@
     object-fit: cover;
 }
 
-.new-friend-icon {
-    width: 30px;
-    height: 30px;
-    position: relative;
-    bottom: -14px;
-}
-
 .bio-textarea {
     padding: 25px;
     width: fit-content;

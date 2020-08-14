@@ -5,6 +5,7 @@ import {
     acceptFriendRequest,
     unfriend,
 } from "./Redux/actions";
+import { Link } from "react-router-dom";
 
 export default function Friends() {
     const dispatch = useDispatch();
@@ -28,6 +29,13 @@ export default function Friends() {
             })
     );
 
+    const id = useSelector(
+        (state) =>
+            state.friendsWannabes &&
+            state.friendsWannabes.filter((friend) => friend.id)
+    );
+    console.log("id in friends :", id);
+
     if (!friends || !wannabes) {
         return null;
     }
@@ -40,15 +48,18 @@ export default function Friends() {
 
             {friends.map((friend, i) => (
                 <div key={i}>
-                    <img
-                        className="profile-pic-small"
-                        src={friend.profile_pic}
-                    />
-                    <div className="profile-username">
-                        <p>
-                            <span>{friend.first}</span> {friend.last}
-                        </p>
-                    </div>
+                    <Link to={`/user/${friend.id}`}>
+                        <img
+                            className="profile-pic-small"
+                            src={friend.profile_pic}
+                        />
+                        <div className="profile-username">
+                            <p>
+                                <span>{friend.first}</span> {friend.last}
+                            </p>
+                        </div>
+                    </Link>
+
                     <button
                         onClick={() =>
                             dispatch(unfriend("unfriend", friend.id))
@@ -60,21 +71,25 @@ export default function Friends() {
             ))}
         </div>
     );
+    console.log("wannabes num :", wannabes.length);
 
     const wannabesList = (
         <div className="wannabes-list">
             <h2>Friend requests</h2>
             {wannabes.map((wannabe, i) => (
                 <div key={i}>
-                    <img
-                        className="profile-pic-small"
-                        src={wannabe.profile_pic}
-                    />
-                    <div className="profile-username">
-                        <p>
-                            <span>{wannabe.first}</span> {wannabe.last}
-                        </p>
-                    </div>
+                    <Link to={`/user/${wannabe.id}`}>
+                        <img
+                            className="profile-pic-small"
+                            src={wannabe.profile_pic}
+                        />
+                        <div className="profile-username">
+                            <p>
+                                <span>{wannabe.first}</span> {wannabe.last}
+                            </p>
+                        </div>
+                    </Link>
+
                     <button
                         onClick={() =>
                             dispatch(acceptFriendRequest("accept", wannabe.id))
@@ -97,9 +112,13 @@ export default function Friends() {
 
     return (
         <div>
-            {!friends.length && <div>You have no friends!</div>}
+            {!friends.length && (
+                <div className="no-friends">You have no friends!</div>
+            )}
             {!!friends.length && friendsList}
-            {!wannabes.length && <div>no friend request!</div>}
+            {!wannabes.length && (
+                <div className="no-friends">no friend request!</div>
+            )}
             {!!wannabes.length && wannabesList}
         </div>
     );
