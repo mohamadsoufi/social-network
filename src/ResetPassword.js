@@ -20,7 +20,6 @@ export default class ResetPassword extends React.Component {
                 email: this.state.email,
             })
             .then(({ data }) => {
-                console.log("data.step :", data);
                 if (data.step) {
                     this.setState({
                         step: 2,
@@ -45,7 +44,6 @@ export default class ResetPassword extends React.Component {
                 password: this.state.password,
             })
             .then(({ data }) => {
-                console.log("data in child :", data);
                 if (data.step) {
                     this.setState({
                         step: 3,

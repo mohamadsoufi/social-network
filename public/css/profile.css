@@ -16,8 +16,10 @@
 
 .profile-username {
     margin: 0 10px;
-    justify-self: start;
+    justify-self: center;
     align-self: center;
+    grid-column: 1;
+    grid-row: 1;
 }
 .profile-username p {
     font-size: 20px;
@@ -45,11 +47,17 @@
     margin: 3px;
 }
 
-.profile-pic-large {
+.profile-pic-large,
+.other-profile-pic-large {
     height: 300px;
     width: 300px;
     border-radius: 50%;
     object-fit: cover;
+    margin: 20px 0;
+}
+
+.profile-pic-large {
+    cursor: pointer;
 }
 
 .profile-right-side button {
@@ -61,16 +69,22 @@
     padding: 25px;
     width: fit-content;
     display: block;
+    justify-self: center;
     grid-column: 1;
-    grid-row: 2;
-    justify-self: start;
+    grid-row: 1;
+    align-self: flex-end;
+    margin: -63px 1px;
 }
 
 .bio-text-container {
-    justify-self: start;
+    justify-self: center;
     grid-column: 1;
-    grid-row: 2;
+    grid-row: 1;
     margin: 30px;
+    align-self: flex-end;
+}
+.bio-text-container button {
+    margin: 0;
 }
 
 .find-more-people {

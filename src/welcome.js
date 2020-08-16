@@ -13,8 +13,8 @@ const styles = {
         alignItems: "center",
     },
     image: {
-        width: "200px",
-        height: "200px",
+        width: "130px",
+        height: "130px",
     },
 };
 

@@ -12,8 +12,7 @@ export function Profile(props) {
                 <div className="profile-username">
                     <h1>My Profile</h1>
                     <p>
-                        {first}
-                        {last}
+                        {first} {last}
                     </p>
                 </div>
                 <BioEditor

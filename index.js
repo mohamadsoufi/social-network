@@ -90,7 +90,6 @@ const uploader = multer({
 /////ROUTES/////
 
 app.post("/register", (req, res) => {
-    // console.log("req.body :", req.body);
     if (Object.keys(req.body).length !== 0) {
         let { first, last, email, password } = req.body;
         hash(password)
@@ -146,14 +145,10 @@ app.post("/reset-password", function (req, res) {
                 let to = rows[0].email;
                 let text = secretCode;
                 let subj = "This is your Code.";
-                console.log("to :", to);
-                console.log("text :", text);
                 db.addCodeAndEmail([text, to])
                     .then(() => {
-                        console.log("text inside add code to db:", text);
                         ses.sendEmail(to, text, subj)
                             .then((resp) => {
-                                // console.log("resp in send email :", resp);
                                 res.json({ step: true });
                             })
                             .catch((err) => {
@@ -230,8 +225,6 @@ app.post("/upload", uploader.single("file"), s3.upload, function (req, res) {
     const url = s3Url + filename;
     db.addUserPic(url, req.session.userId).then(({ rows }) => {
         res.json(rows[0].profile_pic);
-
-        // res.json({rows[0].url})
     });
 });
 
@@ -328,7 +321,6 @@ app.post("/check-friendship", async (req, res) => {
 app.get("/friends-wannabes", async (req, res) => {
     try {
         const { rows } = await db.getFriends(req.session.userId);
-        // console.log("rows in get friends :", rows);
         res.json(rows);
     } catch (error) {
         console.log("error in freinds-wannabes/GET :", error);

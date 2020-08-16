@@ -42,7 +42,8 @@ class Home extends Component {
             imgUrl: "",
             bio: "",
             id: null,
-            notification: this.props.wannabes,
+            classN: "header",
+            headerTitles: "header-titles",
         };
     }
 
@@ -56,14 +57,31 @@ class Home extends Component {
                     imgUrl: profile_pic,
                     id: id,
                     bio: bio,
-                    notification: this.props.notification,
+                    classN: "header",
                 });
             })
             .catch((err) => {
                 console.log("err in get /user: ", err);
             });
-        console.log("this.props :", this.props);
+
         this.props.receiveFriendsWannabes();
+        this.handleScroll = this.handleScroll.bind(this);
+        window.addEventListener("scroll", this.handleScroll);
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener("scroll", this.handleScroll);
+    }
+
+    handleScroll() {
+        if (window.scrollY > 0) {
+            this.setState({
+                classN: "header-y",
+                headerTitles: "header-titles-a",
+            });
+        } else {
+            this.setState({ classN: "header", headerTitles: "header-titles" });
+        }
     }
 
     toggleModal() {
@@ -82,12 +100,9 @@ class Home extends Component {
     }
 
     render() {
-        console.log("this.state.notification :", this.state.notification);
-        console.log("this.props.wannabes :", this.props.wannabes);
-
         return (
             <BrowserRouter>
-                <div className="header">
+                <div className={this.state.classN}>
                     <div>
                         <Link to="/">
                             <img
@@ -98,7 +113,7 @@ class Home extends Component {
                         </Link>
                     </div>
                     <div className="header-right">
-                        <div className="header-titles">
+                        <div className={this.state.headerTitles}>
                             {this.props.wannabes && (
                                 <div>
                                     {this.props.wannabes.length > 0 && (

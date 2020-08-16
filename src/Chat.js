@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 
 export default function Chat(props) {
     const [chatMessage, setChatMessage] = useState();
-    const [chatMessages, setChatMessages] = useState();
 
     const elemRef = useRef();
 

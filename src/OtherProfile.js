@@ -33,16 +33,14 @@ export class OtherProfile extends Component {
                 <div className="profile-content-container">
                     <div className="profile-username">
                         <p>
-                            <span>{this.state.first}</span>
-
-                            {this.state.last}
+                            {this.state.first} {this.state.last}
                         </p>
                         <h2>{this.state.bio}</h2>
                     </div>
 
                     <div className="profile-right-side">
                         <ProfilePic
-                            profilePicSize="profile-pic-large"
+                            profilePicSize="other-profile-pic-large"
                             first={this.state.first}
                             last={this.state.first}
                             imgUrl={this.state.imgUrl}
