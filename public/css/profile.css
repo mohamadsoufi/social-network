@@ -15,7 +15,7 @@
 }
 
 .profile-username {
-    margin: 30px;
+    margin: 0 10px;
     justify-self: start;
     align-self: center;
 }
@@ -42,6 +42,7 @@
     object-fit: cover;
     margin-left: 31px;
     cursor: pointer;
+    margin: 3px;
 }
 
 .profile-pic-large {
@@ -49,6 +50,11 @@
     width: 300px;
     border-radius: 50%;
     object-fit: cover;
+}
+
+.profile-right-side button {
+    width: 50%;
+    margin: 20px 26%;
 }
 
 .bio-textarea {
@@ -65,11 +71,6 @@
     grid-column: 1;
     grid-row: 2;
     margin: 30px;
-}
-
-.users {
-    margin: 25px;
-    padding-bottom: 20px;
 }
 
 .find-more-people {
@@ -96,4 +97,17 @@ button:hover {
     color: rgba(0, 0, 0, 0.705);
     background-color: rgba(179, 177, 177, 0.383);
     border-radius: 20px;
+}
+
+button:active {
+    color: rgba(0, 0, 0, 0.705);
+    background-color: rgba(179, 177, 177, 0.383);
+    border-radius: 20px;
+    border: none;
+    text-decoration: none;
+    outline: 0;
+}
+
+button:focus {
+    outline: 0;
 }

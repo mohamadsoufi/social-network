@@ -146,9 +146,11 @@ app.post("/reset-password", function (req, res) {
                 let to = rows[0].email;
                 let text = secretCode;
                 let subj = "This is your Code.";
+                console.log("to :", to);
+                console.log("text :", text);
                 db.addCodeAndEmail([text, to])
                     .then(() => {
-                        // console.log("text inside add code to db:", text);
+                        console.log("text inside add code to db:", text);
                         ses.sendEmail(to, text, subj)
                             .then((resp) => {
                                 // console.log("resp in send email :", resp);
@@ -198,6 +200,7 @@ app.post("/check-code", (req, res) => {
         })
         .catch((err) => {
             console.log("err in check code :", err);
+            res.json({ step: false });
         });
 });
 

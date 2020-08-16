@@ -10,9 +10,11 @@ import Chat from "./Chat";
 
 import axios from "./axios";
 import { connect } from "react-redux";
+import { receiveFriendsWannabes } from "./Redux/actions";
 
 //using Redux with class:
 //use mapStateToProps then connect
+
 function mapStateToProps(state) {
     return {
         wannabes:
@@ -26,6 +28,12 @@ function mapStateToProps(state) {
             }),
     };
 }
+
+const mapDispatchToProps = (dispatch) => ({
+    receiveFriendsWannabes: () => {
+        dispatch(receiveFriendsWannabes());
+    },
+});
 class Home extends Component {
     constructor(props) {
         super(props);
@@ -34,6 +42,7 @@ class Home extends Component {
             imgUrl: "",
             bio: "",
             id: null,
+            notification: this.props.wannabes,
         };
     }
 
@@ -47,11 +56,14 @@ class Home extends Component {
                     imgUrl: profile_pic,
                     id: id,
                     bio: bio,
+                    notification: this.props.notification,
                 });
             })
             .catch((err) => {
                 console.log("err in get /user: ", err);
             });
+        console.log("this.props :", this.props);
+        this.props.receiveFriendsWannabes();
     }
 
     toggleModal() {
@@ -70,7 +82,9 @@ class Home extends Component {
     }
 
     render() {
-        // console.log("this.props.wannabes :", this.props.wannabes);
+        console.log("this.state.notification :", this.state.notification);
+        console.log("this.props.wannabes :", this.props.wannabes);
+
         return (
             <BrowserRouter>
                 <div className="header">
@@ -103,10 +117,10 @@ class Home extends Component {
                                 </div>
                             )}
                             <Link to="/friends">Friends</Link>
-                            <Link to="/chat">chat</Link>
-                            <Link to="/users">Find friends</Link>
+                            <Link to="/chat">Chat</Link>
+                            <Link to="/users">Find Friends</Link>
                             <a className="header-links" href="/logout">
-                                log out
+                                Log Out
                             </a>
                         </div>
                         <ProfilePic
@@ -151,4 +165,4 @@ class Home extends Component {
         );
     }
 }
-export default connect(mapStateToProps)(Home);
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

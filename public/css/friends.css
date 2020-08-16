@@ -1,10 +1,13 @@
+.friends-wannabes-container {
+    display: flex;
+}
+
 .wannabes-list,
 .friends-list {
     margin-top: 100px;
-    margin-left: 50px;
     font-weight: 900;
-    border-bottom: black solid 1px;
     width: 50%;
+    margin: 70px;
 }
 
 /* .friends-list {
@@ -23,4 +26,17 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+.user-content-container {
+    display: flex;
+    width: 430px;
+}
+
+.find-friends-container {
+    margin: 60px 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
 }

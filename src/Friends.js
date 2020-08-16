@@ -34,13 +34,16 @@ export default function Friends() {
             state.friendsWannabes &&
             state.friendsWannabes.filter((friend) => friend.id)
     );
-    console.log("id in friends :", id);
 
     if (!friends || !wannabes) {
         return null;
     }
-
-    let profile_pic = profile_pic || "../user.png";
+    const picChecker = (person) => {
+        if (person.profile_pic) {
+            return person.profile_pic;
+        }
+        return "../user.png";
+    };
 
     const friendsList = (
         <div className="friends-list">
@@ -48,10 +51,13 @@ export default function Friends() {
 
             {friends.map((friend, i) => (
                 <div key={i}>
-                    <Link to={`/user/${friend.id}`}>
+                    <Link
+                        to={`/user/${friend.id}`}
+                        className="user-content-container"
+                    >
                         <img
                             className="profile-pic-small"
-                            src={friend.profile_pic}
+                            src={picChecker(friend)}
                         />
                         <div className="profile-username">
                             <p>
@@ -71,17 +77,19 @@ export default function Friends() {
             ))}
         </div>
     );
-    console.log("wannabes num :", wannabes.length);
 
     const wannabesList = (
         <div className="wannabes-list">
             <h2>Friend requests</h2>
             {wannabes.map((wannabe, i) => (
                 <div key={i}>
-                    <Link to={`/user/${wannabe.id}`}>
+                    <Link
+                        to={`/user/${wannabe.id}`}
+                        className="user-content-container"
+                    >
                         <img
                             className="profile-pic-small"
-                            src={wannabe.profile_pic}
+                            src={picChecker(wannabe)}
                         />
                         <div className="profile-username">
                             <p>
@@ -111,7 +119,7 @@ export default function Friends() {
     );
 
     return (
-        <div>
+        <div className="friends-wannabes-container">
             {!friends.length && (
                 <div className="no-friends">You have no friends!</div>
             )}

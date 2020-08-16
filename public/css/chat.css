@@ -9,6 +9,7 @@
     position: relative;
     background: #00abbb96;
     border-radius: 1em;
+    left: 20%;
 }
 
 .chat-container:after {
@@ -88,7 +89,16 @@
 }
 
 #chatArea {
-    width: 50%;
+    width: 60%;
     margin: 10px 10px;
-    margin-left: 40px;
+}
+
+.input-send-container {
+    margin: 0 25%;
+    display: flex;
+    justify-content: center;
+}
+
+.input-send-container button {
+    margin: 12px 4px;
 }

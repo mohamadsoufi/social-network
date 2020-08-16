@@ -91,14 +91,16 @@ export default function Chat(props) {
             <div id="chat-messages" ref={elemRef}>
                 {msgs && msgs.map((msg, i) => messageMaker(msg, i))}
             </div>
-            <input
-                type="text"
-                name="chatArea"
-                id="chatArea"
-                onKeyDown={(e) => enterMsg(e)}
-                onChange={(e) => setChatMessage(e.target.value)}
-            ></input>
-            <button onClick={(e) => sendMsg(e)}>Send</button>
+            <div className="input-send-container">
+                <input
+                    type="text"
+                    name="chatArea"
+                    id="chatArea"
+                    onKeyDown={(e) => enterMsg(e)}
+                    onChange={(e) => setChatMessage(e.target.value)}
+                ></input>
+                <button onClick={(e) => sendMsg(e)}>Send</button>
+            </div>
         </>
     );
 }

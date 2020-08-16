@@ -44,20 +44,27 @@ export default function FindPeople() {
     const handleChange = (e) => {
         setUserInput(e.target.value);
     };
+    const picChecker = (profile_pic) =>
+        profile_pic ? profile_pic : "../user.png";
 
-    return (
-        <div>
-            <h2 className="find-more-people">Find more People</h2>
-            <input value={userInput} name="users" onChange={handleChange} />
+    const findFriends = (
+        <div className="find-friends-container">
+            <h2 className="find-more-people">Find Friends</h2>
+            <input
+                placeholder="search..."
+                value={userInput}
+                name="users"
+                onChange={handleChange}
+            />
             {users &&
                 users.map((user, i) => {
                     let { first, last, profile_pic, id } = user;
                     return (
-                        <div key={i} className="users">
+                        <div key={i} className="user-content-container">
                             <Link to={`/user/${id}`}>
                                 <img
                                     className="profile-pic-small"
-                                    src={profile_pic}
+                                    src={picChecker(profile_pic)}
                                     alt={first}
                                 />
                             </Link>
@@ -69,7 +76,7 @@ export default function FindPeople() {
                         </div>
                     );
                 })}
-            ;
         </div>
     );
+    return <div>{findFriends && findFriends}</div>;
 }

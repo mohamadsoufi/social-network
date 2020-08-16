@@ -1,14 +1,11 @@
-import React, { Fragment } from "react";
+import React from "react";
 import axios from "./axios";
 import { Link } from "react-router-dom";
 // import CheckCode from "./CheckCode";
 export default class ResetPassword extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            // step: 2,
-            // step: "",
-        };
+        this.state = {};
     }
 
     handleChange(e) {
@@ -69,7 +66,7 @@ export default class ResetPassword extends React.Component {
 
         if (step == 2) {
             return (
-                <Fragment>
+                <div className="reset-pw-container">
                     <h2>Reset Password</h2>
                     <input
                         onChange={(e) => this.handleChange(e)}
@@ -78,23 +75,24 @@ export default class ResetPassword extends React.Component {
                     />
                     <input
                         onChange={(e) => this.handleChange(e)}
-                        placeholder="password"
+                        placeholder="New Password"
+                        type="password"
                         name="password"
                     />
 
                     <button onClick={() => this.submitTo()}>Submit</button>
-                </Fragment>
+                </div>
             );
         } else if (step == 3) {
             return (
-                <div>
-                    <h3>Success!</h3>
+                <div className="reset-pw-container">
+                    <h3 className="success">Success!</h3>
                     <Link to="login">log in</Link>
                 </div>
             );
         } else {
             return (
-                <Fragment>
+                <div className="reset-pw-container">
                     <h2>Reset Password</h2>
                     <input
                         onChange={(e) => this.handleChange(e)}
@@ -103,7 +101,7 @@ export default class ResetPassword extends React.Component {
                     />
 
                     <button onClick={() => this.submit()}>Submit</button>
-                </Fragment>
+                </div>
             );
         }
     }

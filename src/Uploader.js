@@ -48,7 +48,12 @@ export default class Uploader extends Component {
                     name="file"
                     accept="image/*"
                 />
-                <label className="upload-file-label">Upload Picture</label>
+                <label className="upload-file-label">
+                    <img
+                        className="upload-icon"
+                        src="https://img.icons8.com/color/96/000000/add-image.png"
+                    />
+                </label>
                 <button className="upload-btn" onClick={() => this.submit()}>
                     submit
                 </button>

@@ -6,7 +6,6 @@ export function FriendButton(props) {
     const [trackText, setTrackText] = useState({});
 
     let { id } = props;
-    console.log("id in friendbtn :", id);
 
     useEffect(() => {
         (async () => {

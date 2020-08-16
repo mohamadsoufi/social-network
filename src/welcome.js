@@ -1,6 +1,6 @@
 import React from "react";
 import Register from "./Register";
-import { HashRouter, Route } from "react-router-dom";
+import { HashRouter, Route, Link } from "react-router-dom";
 import Login from "./Login";
 import ResetPassword from "./ResetPassword";
 
@@ -27,10 +27,9 @@ export default class Welcome extends React.Component {
     render() {
         return (
             <HashRouter style={styles.wrapper}>
-                <img src="/logo.png" style={styles.image} />
-                <style>{"div:hover {color: blue;}"}</style>
-
-                <div>Hello from welcome page!</div>
+                <Link to="/login">
+                    <img src="/logo.png" style={styles.image} />
+                </Link>
 
                 <Route exact path="/" component={Register} />
                 <Route path="/login" component={Login} />
