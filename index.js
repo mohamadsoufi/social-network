@@ -91,8 +91,8 @@ const uploader = multer({
 
 app.post("/register", (req, res) => {
     if (Object.keys(req.body).length !== 0) {
-        let { first, last, email, password } = req.body;
-        hash(password)
+        let { first, last, email, pw } = req.body;
+        hash(pw)
             .then((hashedPw) => {
                 db.addUserInfo(first, last, email, hashedPw)
                     .then((results) => {
