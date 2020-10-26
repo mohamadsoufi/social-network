@@ -43,3 +43,35 @@ You will also see any lint errors in the console.
     - messages are instantly received by all users - using Socket.io
     - Messages form the same user are grouped into one block with time stamp.
     - Sending message by clicking or pressing enter.
+
+---
+
+This is the home page where the user can add/change an image and add/ edit the bio.
+
+ <img src="./public/readme-imgs/home.png">
+
+By using AWS S3 and clicking on the profile picture the user can upload a new picture.
+
+ <img src="./public/readme-imgs/uploadImg.gif">
+
+This is how simple it is to add and change the Bio text.
+
+ <img src="./public/readme-imgs/bio.gif">
+
+This page shows the Friends list on the left with unfriending option and the friend requests on the right where the user can accept or reject the friend requests.
+
+ <img src="./public/readme-imgs/friends-requests.png">
+
+Before typing in the search bar the user can see the last three previous users.
+
+Once the user type the search begins and start seeing the result based on the first name match.
+
+Then it's possible to chose one user to add as friend.
+
+ <img src="./public/readme-imgs/add-new-friend.gif">
+
+In the Chat page users can chat in a public chatroom.
+
+Only the current user's message appears on the right.
+
+ <img src="./public/readme-imgs/chating.gif">
